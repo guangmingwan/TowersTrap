@@ -48,10 +48,10 @@ function Rocket:update(dt)
 		self.shoot_time = self.shoot_time - 10 * dt
 	end
 
-	if (self.target == nil) then --»ñÈ¡Ò»¸ötarget
+	if (self.target == nil) then --ï¿½ï¿½È¡Ò»ï¿½ï¿½target
 
 		for i,e in pairs(state.enemys) do
-			if (e.hidden~=true and e.number ~=6 -- ²»ÊÇ·É»ú
+			if (e.hidden~=true and e.number ~=6 -- ï¿½ï¿½ï¿½Ç·É»ï¿½
 			and  math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
 			    self.target = e
 			    e.locked = e.locked + 1
@@ -61,13 +61,13 @@ function Rocket:update(dt)
  	end
     local e = self.target
     if(e ~= nil) then
-		if(e.health <=0 ) then -- ¸ú×ÙµÄÄ¿±ê±»»÷±ÐÁË
+		if(e.health <=0 ) then -- ï¿½ï¿½ï¿½Ùµï¿½Ä¿ï¿½ê±»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			e.locked = e.locked - 1
 			self.target = nil
 			return
 		end
 		if(math.abs(e.x - self.blockhouse.x) > range or
-			math.abs(e.y - self.blockhouse.y) > range) then -- ³¬³ö·¶Î§
+			math.abs(e.y - self.blockhouse.y) > range) then -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î§
     		e.locked = e.locked - 1
 		    self.target = nil
 		    return
@@ -82,8 +82,8 @@ function Rocket:update(dt)
 		if(self.blockhouse.angle > angle ) then
 			self.blockhouse.angle = angle - 90 * dt  + 90
     	end
-		if(self.shoot_time <=0 and math.abs(self.blockhouse.angle - 90 - angle)<5 ) then -- ·¢Éä×Óµ¯
-   			love.audio.play(sound["rocket_fire"], 1)
+		if(self.shoot_time <=0 and math.abs(self.blockhouse.angle - 90 - angle)<5 ) then -- ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½
+   			love.audio.play(sound["rocket_fire"])
       		self.shoot_time = shoot_time
    			table.insert(state.ballets , Ballet.create(1, self,self.blockhouse.x ,self.blockhouse.y ,self.target))
 		end

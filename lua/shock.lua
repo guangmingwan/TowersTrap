@@ -32,7 +32,7 @@ function Shock:update(dt)
 	if(self.shoot_time >0) then
 		self.shoot_time = self.shoot_time - 10 * dt
 	end
-	if (self.target == nil) then --»ñÈ¡Ò»¸ötarget
+	if (self.target == nil) then --ï¿½ï¿½È¡Ò»ï¿½ï¿½target
 		local lastwanttarget = nil
 		for i,e in pairs(state.enemys) do
 
@@ -52,7 +52,7 @@ function Shock:update(dt)
 			lastwanttarget.locked = lastwanttarget.locked + 1
 		end
 	else
-        if(self.target.health <=0 or self.target.slowly == true) then -- ¸ú×ÙµÄÄ¿±ê±»»÷±ÐÁË»òÕßÖÐÁË¼õËÙµ¯ 
+        if(self.target.health <=0 or self.target.slowly == true) then -- ï¿½ï¿½ï¿½Ùµï¿½Ä¿ï¿½ê±»ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¼ï¿½ï¿½Ùµï¿½ 
 			self.target = nil
 			return
 		end
@@ -65,8 +65,8 @@ function Shock:update(dt)
 		if(self.blockhouse.angle > angle ) then
 			self.blockhouse.angle = angle - 90 * dt  + 90
     	end
-  		if(self.shoot_time <=0 and math.abs(self.blockhouse.angle - 90 - angle)<5 ) then -- ·¢Éä×Óµ¯
-   			love.audio.play(sound["slowdown_fire"], 1)
+  		if(self.shoot_time <=0 and math.abs(self.blockhouse.angle - 90 - angle)<5 ) then -- ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½
+   			love.audio.play(sound["slowdown_fire"])
    			self.shoot_time  = shoot_time
    			table.insert(state.ballets , Ballet.create(3, self,self.blockhouse.x ,self.blockhouse.y ,self.target))
 

@@ -28,7 +28,11 @@ function Options:draw()
 	--love.graphics.draw("Level:", 60, 375)
 	
 	love.graphics.setColor(color["main"])
-	love.graphics.setLine(4, love.line_rough)
+	-- 设置线条宽度为 4
+	love.graphics.setLineWidth(4)
+
+	-- 设置线条样式为粗糙（"rough"），如果你想要平滑的线条，请使用 "smooth"
+	love.graphics.setLineStyle("rough")
 	
 	if audio then
 		love.graphics.line(400/2,305,450/2,305)

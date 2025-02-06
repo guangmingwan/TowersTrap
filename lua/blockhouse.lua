@@ -67,12 +67,26 @@ function Blockhouse.create(weapon, mapgridpointer)
 	pr(temp.gun, "create blockhouse")
 	return temp
 end
+local function drawWithDegrees(image, x, y, angleDegrees)
+	-- 默认缩放比例设置为1，即不进行缩放
+    local scaleX, scaleY = 1, 1
+    -- 将角度从度转换为弧度
+    local angleRadians = angleDegrees * (math.pi / 180)
 
+    -- 计算图像中心点的偏移量
+    local originX = image:getWidth() / 2
+    local originY = image:getHeight() / 2
+
+    -- 使用转换后的弧度值和中心点偏移进行绘制
+    love.graphics.draw(image,  x+originX, y+originY, angleRadians, scaleX, scaleY, originX, originY)
+end
 function Blockhouse:draw()
 	local i = self.weapon
 	local gridpointer = self.gridpointer
-	self.angle = 0
-	love.graphics.draw(graphics["blockhous"][i], self._x, self._y, self.angle)
+	--self.angle = 0
+	-- 假设 self.angle 是以度为单位的角度值
+	
+	drawWithDegrees(graphics["blockhous"][i], self._x, self._y,self.angle)
 	if self.ice then
 	    love.graphics.setColor(255, 255, 255, 200)
      	love.graphics.rectangle(love.draw_fill, self._x, self._y, 34, 34)
@@ -99,7 +113,7 @@ function Blockhouse:draw()
 		s = "unsel"
 	end
 
-	-- ���ﱤ��Ϣ 
+	-- ���ﱤ��Ϣ 
 	if self.hover and debug then
 		love.graphics.setFont(font["tiny"])
  		love.graphics.setColor(color["text"])
@@ -118,7 +132,8 @@ function Blockhouse:drawselector()
 		love.graphics.circle(love.draw_fill, self.x, self.y, range, 255)
 
 		-- draw upgrade rectangle
-		love.graphics.setLine( 1 )
+		love.graphics.setLineWidth(1) -- 设置线条宽度为 1
+		love.graphics.setLineStyle("smooth") -- 设置线条样式为平滑
 		love.graphics.setColor(color["gray"])
 
 		local textheight = font["tiny"]:getHeight()

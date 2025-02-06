@@ -10,31 +10,30 @@
 
 
 -- Resources
-color =	 {
-	---[[
-	background = love.graphics.newColor(240,243,247),
-	main = love.graphics.newColor(63,193,245),
-	menu_bg = love.graphics.newColor(130,135,121,150),
-	menu_border = love.graphics.newColor(136,143,134,200),
-	text = love.graphics.newColor(76,77,78),
-	menu_text = love.graphics.newColor(0,0,0),
-	obj_selected = love.graphics.newColor(254,154,0),
-	grid_hover = love.graphics.newColor(255,155,0),
-	grid_open = love.graphics.newColor(248,248,100,200),
-	grid_close = love.graphics.newColor(229,127,211,200),
-	grid = love.graphics.newColor(255,255,255,100),
-	white = love.graphics.newColor(255,255,255),
-	yellow = love.graphics.newColor(255,255,0),
-	overlay = love.graphics.newColor(255,255,255,100),
-	green_ol = love.graphics.newColor(0,255,0,25),
-	shadow = love.graphics.newColor(0,0,0,50),
-	black  = love.graphics.newColor(0,0,0),
-	green = love.graphics.newColor(0,255,0),
-	green1 = love.graphics.newColor(0,230,160),
-	blood = love.graphics.newColor(230,0,160),
-	gray = love.graphics.newColor(128,128,128)
-	---]]
+color = {
+    background = {240, 243, 247},
+    main = {63, 193, 245},
+    menu_bg = {130, 135, 121, 150},
+    menu_border = {136, 143, 134, 200},
+    text = {76, 77, 78},
+    menu_text = {0, 0, 0},
+    obj_selected = {254, 154, 0},
+    grid_hover = {255, 155, 0},
+    grid_open = {248, 248, 100, 200},
+    grid_close = {229, 127, 211, 200},
+    grid = {255, 255, 255, 100},
+    white = {255, 255, 255},
+    yellow = {255, 255, 0},
+    overlay = {255, 255, 255, 100},
+    green_ol = {0, 255, 0, 25},
+    shadow = {0, 0, 0, 50},
+    black = {0, 0, 0},
+    green = {0, 255, 0},
+    green1 = {0, 230, 160},
+    blood = {230, 0, 160},
+    gray = {128, 128, 128}
 }
+
 
 font = {
 	--default = love.graphics.newFont(love.default_font, 24),
@@ -91,29 +90,30 @@ graphics = {
 	}
 }
 
-music =	{
-	menu = love.audio.newMusic("sound/menu_bg.mod"),
-	game = love.audio.newMusic("sound/game_bg.mod") 
+music = {
+    menu = love.audio.newSource("sound/menu_bg.mod", "stream"),
+    game = love.audio.newSource("sound/game_bg.mod", "stream") 
 }
 
-sound =	{
-	click = love.audio.newSound("sound/click.ogg"),
-	shush = love.audio.newSound("sound/shh.ogg"),
-	pling = love.audio.newSound("sound/pling.ogg"),
-	create_tower = love.audio.newSound("sound/create_tower.wav"),
-	sniper_fire = love.audio.newSound("sound/sniper_fire.wav"),
-	rocket_fire = love.audio.newSound("sound/rocket_fire.wav"),
-	earthquake_fire = love.audio.newSound("sound/earthquake_fire.wav"),
-	air_fire = love.audio.newSound("sound/air_fire.wav"),
-	radar_fire = love.audio.newSound("sound/radar_fire.wav"),
-	range_fire = love.audio.newSound("sound/range_fire.wav"),
-	slowdown_fire = love.audio.newSound("sound/slowdown_fire.wav"),
-	upgrade_tower = love.audio.newSound("sound/upgrade_tower.wav"),
-	sell_tower = love.audio.newSound("sound/sell_tower.wav"),
-	next_level = love.audio.newSound("sound/next_level.wav"),
-	creature_die = love.audio.newSound("sound/creature_die.wav"),
-	creature_rich_dest = love.audio.newSound("sound/creature_rich_dest.wav")
+sound = {
+    click = love.audio.newSource("sound/click.ogg", "static"),
+    shush = love.audio.newSource("sound/shh.ogg", "static"),
+    pling = love.audio.newSource("sound/pling.ogg", "static"),
+    create_tower = love.audio.newSource("sound/create_tower.wav", "static"),
+    sniper_fire = love.audio.newSource("sound/sniper_fire.wav", "static"),
+    rocket_fire = love.audio.newSource("sound/rocket_fire.wav", "static"),
+    earthquake_fire = love.audio.newSource("sound/earthquake_fire.wav", "static"),
+    air_fire = love.audio.newSource("sound/air_fire.wav", "static"),
+    radar_fire = love.audio.newSource("sound/radar_fire.wav", "static"),
+    range_fire = love.audio.newSource("sound/range_fire.wav", "static"),
+    slowdown_fire = love.audio.newSource("sound/slowdown_fire.wav", "static"),
+    upgrade_tower = love.audio.newSource("sound/upgrade_tower.wav", "static"),
+    sell_tower = love.audio.newSource("sound/sell_tower.wav", "static"),
+    next_level = love.audio.newSource("sound/next_level.wav", "static"),
+    creature_die = love.audio.newSource("sound/creature_die.wav", "static"),
+    creature_rich_dest = love.audio.newSource("sound/creature_rich_dest.wav", "static")
 }
+
 
 tower_upgrade =
     { --snipper =

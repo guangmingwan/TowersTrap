@@ -19,8 +19,8 @@ size = 8
 time_UpdateCapiton = 0
 
 function Game.create()
-	
-	love.audio.play(music["game"], 1)
+	music["game"]:setLooping(false)
+	love.audio.play(music["game"])
 	
 	local temp = {}
 	setmetatable(temp, Game)
@@ -39,9 +39,9 @@ function Game.create()
 	temp.height = love.graphics.getHeight()
 
 	--[[
-  	µØÍ¼±í
+  	ï¿½ï¿½Í¼ï¿½ï¿½
 	]]
-	--temp.maps = {} -- µØÍ¼
+	--temp.maps = {} -- ï¿½ï¿½Í¼
 	temp.maps = {
 				1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,
 				1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,
@@ -85,7 +85,7 @@ function Game.create()
 	   	end
 	end
 	
-    temp.stages ={ --¹Ø¿¨Éè¼Æ
+    temp.stages ={ --ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½
 				{ time = 20, creature = 0, number = 10 },
 				{ time = 20, creature = 1, number = 20 }, 
 				{ time = 20, creature = 2, number = 20 }, 
@@ -176,21 +176,21 @@ function Game.create()
 				
 				}
 	
-	temp.scope = 0 --·ÖÊý
+	temp.scope = 0 --ï¿½ï¿½ï¿½ï¿½
 	temp.money = 8000 --Ç®
-	temp.health = 50 --ÉúÃü
-	temp.time = temp.stages[1].time --Ê±¼ä
-	temp.stage = 0 -- ¹Ø¿¨
-	temp.blockhouses = {} -- µï±¤
-	temp.hints = {} --ÌáÊ¾
+	temp.health = 50 --ï¿½ï¿½ï¿½ï¿½
+	temp.time = temp.stages[1].time --Ê±ï¿½ï¿½
+	temp.stage = 0 -- ï¿½Ø¿ï¿½
+	temp.blockhouses = {} -- ï¿½ï±¤
+	temp.hints = {} --ï¿½ï¿½Ê¾
 	temp.gselectedBlockhouse = nil;
 	
-	temp.enemys = {} --µÐÈË
-	temp.ballets = {} -- ×Óµ¯ 
-	-- Êó±ê¾ø¶ÔÎ»ÖÃ
+	temp.enemys = {} --ï¿½ï¿½ï¿½ï¿½
+	temp.ballets = {} -- ï¿½Óµï¿½ 
+	-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 	temp.mousepointer = {x = 0,
 	                    y = 0}
-	-- Êó±êÍø¸ñÎ»ÖÃ					
+	-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½					
 	temp.gridpointer = {x = 0,
 	                    y = 0}
 
@@ -274,7 +274,7 @@ function Game:getSelectWepons()
 end
 
 function Game:draw()
-	--draw ±³¾°
+	--draw ï¿½ï¿½ï¿½ï¿½
 	--love.graphics.draw(graphics["battle_bg"], 480/2, 640/2)
 	--love.graphics.draw(graphics["battle_bg"], love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 	--print("self:x :"..self.x)
@@ -284,10 +284,18 @@ function Game:draw()
 	--battlearea.top = self.y
 	love.graphics.draw(graphics["battle_bg"], battlearea.left, battlearea.top)
 	
-	-- Draw the current FPS.
-	if(time_UpdateCapiton <=0) then
-    	love.graphics.setCaption("Towers Trap - [FPS: " .. love.timer.getFPS() .."]")
-    end
+	-- å‡è®¾ time_UpdateCapiton æ˜¯ä¸€ä¸ªå…¨å±€å˜é‡æˆ–ç±»æˆå‘˜å˜é‡ï¼Œç”¨äºŽæŽ§åˆ¶æ›´æ–°é¢‘çŽ‡
+	if time_UpdateCapiton <= 0 then
+		-- ä½¿ç”¨ love.window.setTitle æ›´æ–°çª—å£æ ‡é¢˜ä»¥æ˜¾ç¤ºå½“å‰FPS
+		love.window.setTitle("Towers Trap - [FPS: " .. tostring(love.timer.getFPS()) .. "]")
+		
+		-- é‡ç½® time_UpdateCapiton åˆ°æœŸæœ›çš„å€¼ï¼Œä¾‹å¦‚æ¯ç§’æ›´æ–°ä¸€æ¬¡
+		-- è¿™é‡Œçš„ 1.0 è¡¨ç¤ºæ¯ç§’æ›´æ–°ä¸€æ¬¡ï¼Œå¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´è¿™ä¸ªå€¼
+		time_UpdateCapiton = 1.0
+	else
+		-- å‡åŽ»è‡ªä¸Šä¸€å¸§ä»¥æ¥çš„æ—¶é—´
+		time_UpdateCapiton = time_UpdateCapiton - love.timer.getDelta()
+	end
 
 	if(debug) then	
 		love.graphics.setFont(font["tiny"])
@@ -298,7 +306,8 @@ function Game:draw()
 		love.graphics.print(string.format("gridpoint(x:%d,y:%d-%d)",self.gridpointer.x,self.gridpointer.y,self.gridpointer.y * grid_col + self.gridpointer.x), battlearea.left + 100, battlearea.top + 200)
 	
 		-- draw grid
-		love.graphics.setLine(1)
+		love.graphics.setLineWidth(1) -- è®¾ç½®çº¿æ¡å®½åº¦ä¸º 1
+		love.graphics.setLineStyle("smooth") -- è®¾ç½®çº¿æ¡æ ·å¼ä¸ºå¹³æ»‘
 	    love.graphics.setLineStyle(love.line_smooth)
 		
 		-- unit grid = 17*17
@@ -319,7 +328,7 @@ function Game:draw()
 	end
 	local selectWeapon = self:getSelectWepons()
 	
-	-- draw Ô¤±¸·ÅÖÃ·½¿ò
+	-- draw Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½
 	if (selectWeapon >=0) then
 		local gx = self.gridpointer.x
 		local gy = self.gridpointer.y
@@ -330,7 +339,7 @@ function Game:draw()
 		love.graphics.setColor(color["grid_hover"])
 		love.graphics.rectangle( love.draw_line, cx, cy , 17*2, 17*2) 
 		
-		-- Ñ¡ÔñÁËµï±¤ÎäÆ÷
+		-- Ñ¡ï¿½ï¿½ï¿½Ëµï±¤ï¿½ï¿½ï¿½ï¿½
 		if i >0 then
 			if self.money >= tower_upgrade[i][1].buy_cost and 
 			(self.maps[grid_col*gy + gx+1] == 0) and
@@ -346,7 +355,7 @@ function Game:draw()
 			local range = tower_upgrade[i][1].range;
 			love.graphics.circle(love.draw_fill, cx + 17, cy + 17, range*7, 255)
 
-   			-- »­Ñ¡ÔñµÄÎäÆ÷µÄÐÔÄÜ
+   			-- ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			local damage  = tower_upgrade[i][1].damage
 			local buy_cost = tower_upgrade[i][1].buy_cost
 			local shoot_time = tower_upgrade[i][1].shoot_time
@@ -394,16 +403,25 @@ function Game:draw()
 		    
 			local creature_number = self.stages[draw_stage].creature + 1
 
-			if(draw_stage <= #self.stages) then
-				--local oldcolor = love.graphics.getColor()
+			if draw_stage <= #self.stages then
+				-- èŽ·å–å½“å‰é¢œè‰²ä»¥ä¾¿ä¹‹åŽæ¢å¤
 				local r, g, b, a = love.graphics.getColor()
-				love.graphics.setColorMode(love.color_modulate)
-				love.graphics.setColor(255, 255, 255, 255 - 150 * i / 5)
-				love.graphics.draw(graphics["creature"][creature_number], battlearea.left + 14, battlearea.top + 566 - (i-1) * 30 )
-				--love.graphics.setColor(oldcolor)
+				
+				-- è®¾ç½®åŠé€æ˜Žæ•ˆæžœï¼ˆé€šè¿‡alphaé€šé“ï¼‰
+				local alpha = 255 - 150 * i / 5
+				love.graphics.setColor(255, 255, 255, alpha)
+				
+				-- è®¾å®šæ··åˆæ¨¡å¼ä¸º"alpha", è¿™æ˜¯é»˜è®¤çš„æ··åˆæ¨¡å¼ï¼Œé€‚ç”¨äºŽå¤§å¤šæ•°æƒ…å†µä¸‹çš„é€æ˜Žåº¦å¤„ç†
+				--love.graphics.setBlendMode("alpha")
+				
+				-- ç»˜åˆ¶ç”Ÿç‰©å›¾åƒ
+				love.graphics.draw(graphics["creature"][creature_number], battlearea.left + 14, battlearea.top + 566 - (i-1) * 30)
+				
+				-- æ¢å¤ä¹‹å‰ä¿å­˜çš„é¢œè‰²
 				love.graphics.setColor(r, g, b, a)
-				--love.graphics.setColorMode(0)
-				love.graphics.setColorMode(love.color_replace)
+				
+				-- å¦‚æžœéœ€è¦æ¢å¤åˆ°é»˜è®¤çš„æ··åˆæ¨¡å¼æˆ–å…¶ä»–ç‰¹å®šçš„æ··åˆæ¨¡å¼ï¼Œå¯ä»¥å†æ¬¡è°ƒç”¨ setBlendMode
+				--love.graphics.setBlendMode("alpha")  -- æˆ–è€…é€‰æ‹©å…¶ä»–åˆé€‚çš„æ··åˆæ¨¡å¼
 			end
 		end
 	end
@@ -427,7 +445,7 @@ function Game:draw()
 		end
 	end
 	
-	-- »­Ñ¡ÔñµÄÎäÆ÷µÄÐÔÄÜ
+	-- ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if(self.gselectedBlockhouse ~=nil) then
 		local level = self.gselectedBlockhouse.level
 	 	local index = self.gselectedBlockhouse.weapon
@@ -462,7 +480,7 @@ function Game:draw()
 			love.graphics.print(shoot_time_next, battlearea.left + 144, battlearea.top + 604)
 		end
 	end
-	--»­Ñ¡ÔñµÄµï±¤±ß¿ò
+	--ï¿½ï¿½Ñ¡ï¿½ï¿½Äµï±¤ï¿½ß¿ï¿½
 	if self.gselectedBlockhouse ~= nil and self.gselectedBlockhouse.live == 1 then
      	self.gselectedBlockhouse:drawselector()
 	end
@@ -530,18 +548,18 @@ function Game:update(dt)
 	end
 
 	if self.win ~= -999 then
-		if self.win > 0 then -- Ê¤Àû
+		if self.win > 0 then -- Ê¤ï¿½ï¿½
 			self.win = self.win - dt
 		end
 		self.button["new"]:update(dt)
 		self.button["quit"]:update(dt)
-	elseif self.pause then -- ÔÝÍ£
+	elseif self.pause then -- ï¿½ï¿½Í£
 		self.button["resume"]:update(dt)
 		self.button["quit"]:update(dt)
 	elseif self.health <= 0 then
 		self.button["new"]:update(dt)
 		self.button["quit"]:update(dt)
-	else -- ÓÎÏ·ÖÐ
+	else -- ï¿½ï¿½Ï·ï¿½ï¿½
 		local x = love.mouse.getX()
 		local y = love.mouse.getY()
 		self.mousepointer.x = x
@@ -556,7 +574,7 @@ function Game:update(dt)
 
 		for n,bh in pairs(self.blockhouses) do
 			if(bh.live == 0) then
-				-- ÉèÖÃµØÍ¼Î»ÖÃÎª¿ÉÒÔÍ¨¹ý
+				-- ï¿½ï¿½ï¿½Ãµï¿½Í¼Î»ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½
 				local gx = bh.gridpointer.x
 				local gy = bh.gridpointer.y
 				Map[grid_col*gy + gx ].iCanPass = true
@@ -576,7 +594,7 @@ function Game:update(dt)
 
 		for m,b in pairs(self.ballets) do
 		
-			if (b.live == 0) then -- ±¬Õ¨
+			if (b.live == 0) then -- ï¿½ï¿½Õ¨
 				local weapon = b.host.blockhouse.weapon
 				local level = b.host.blockhouse.level
 				--pr(b,"ballet")
@@ -588,7 +606,7 @@ function Game:update(dt)
 						e.health = e.health - damage
 						if(e.health <=0) then
 							b.host.target = nil
-							love.audio.play(sound["creature_die"], 1)
+							love.audio.play(sound["creature_die"])
 							self.scope = self.scope + e.award
 							self.money = self.money + e.money
 							table.insert(self.hints,Hint.create("fly",e.award,e.x,e.y))
@@ -600,7 +618,7 @@ function Game:update(dt)
 							e.health = e.health - damage
 							if(e.health <=0) then
 								b.host.target = nil
-								love.audio.play(sound["creature_die"], 1)
+								love.audio.play(sound["creature_die"])
 								self.scope = self.scope + e.award
 								self.money = self.money + e.money
 								table.insert(self.hints,Hint.create("fly",e.award,e.x,e.y))
@@ -613,7 +631,7 @@ function Game:update(dt)
 						e.health = e.health - damage
 						if(e.health <=0) then
 							b.host.target = nil
-							love.audio.play(sound["creature_die"], 1)
+							love.audio.play(sound["creature_die"])
 							self.scope = self.scope + e.award
 							self.money = self.money + e.money
 							table.insert(self.hints,Hint.create("fly",e.award,e.x,e.y))
@@ -625,7 +643,7 @@ function Game:update(dt)
 						e.health = e.health - damage
 						if(e.health <=0) then
 							b.host.target = nil
-							love.audio.play(sound["creature_die"], 1)
+							love.audio.play(sound["creature_die"])
 							self.scope = self.scope + e.award
 							self.money = self.money + e.money
 							table.insert(self.hints,Hint.create("fly",e.award,e.x,e.y))
@@ -638,7 +656,7 @@ function Game:update(dt)
 							e.health = e.health - damage
 							if(e.health <=0) then
 								b.host.target = nil
-								love.audio.play(sound["creature_die"], 1)
+								love.audio.play(sound["creature_die"])
 								self.scope = self.scope + e.award
 								self.money = self.money + e.money
 								table.insert(self.hints,Hint.create("fly",e.award,e.x,e.y))
@@ -677,15 +695,15 @@ function Game:update(dt)
 	end
 end
 
--- ÇÐ»»¹Ø¿¨
+-- ï¿½Ð»ï¿½ï¿½Ø¿ï¿½
 function Game:switchStage(dt)
 
 	--print("battlearea.left:"..battlearea.left)
 	--love.timer.sleep(2000)
 	if self.time <= 0 then
 		self.stage = self.stage + 1
-		self.time = self.stages[self.stage].time --Ê±¼ä
-		-- µÐÈË½øÈë³¡¾°
+		self.time = self.stages[self.stage].time --Ê±ï¿½ï¿½
+		-- ï¿½ï¿½ï¿½Ë½ï¿½ï¿½ë³¡ï¿½ï¿½
 		if(self.stage >= 1 and self.stage <= #self.stages) then
 		
 			for i = 1,self.stages[self.stage].number / 2 do
@@ -704,8 +722,9 @@ function Game:switchStage(dt)
 				local creature =  Creature.create(self, self.stages[self.stage].creature, x, y, true)
 				table.insert(self.enemys, creature)
 			end
-			--]] 
-			love.audio.play(sound["next_level"], 1)
+			--]]
+			love.audio.stop() 
+			love.audio.play(sound["next_level"])
 		end
 	end
 	self.time = self.time - dt
@@ -759,7 +778,7 @@ function Game:mousepressed(x, y, button)
 	local gx = math.floor((x - battlearea.left - 17/2) / 17)
 	local gy = math.floor((y - battlearea.top - 17/2 ) / 17)
 	
-	-- ÏÂÒ»¹Ø 
+	-- ï¿½ï¿½Ò»ï¿½ï¿½ 
 	if(x > 3 and x < 50 and y > 555 and y < 590) then
 	    self.time = 0
 		local bonus
@@ -772,7 +791,7 @@ function Game:mousepressed(x, y, button)
 		table.insert(self.hints, Hint.create("fadeout2", "TIME BONUS!" .. bonus, 300, 550))
 	end
 	
-	-- °´home¼ü 
+	-- ï¿½ï¿½homeï¿½ï¿½ 
 	if(x > 3 and x < 50 and y > 600 and y < 634) then
 		if self.win ~= -999 or self.health <= 0 then
 			state = Menu.create()
@@ -789,7 +808,7 @@ function Game:mousepressed(x, y, button)
 			(self.maps[grid_col * (gy + 1) + gx + 1] == 0) and
 			(self.maps[grid_col * (gy + 1) + gx + 2] == 0) then
 		
-		-- Ôö¼ÓÒ»¸öµï±¤
+		-- ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï±¤
 		Map[grid_col * gy + gx ].iCanPass = false
 		Map[grid_col * gy + gx + 1].iCanPass = false
 		Map[grid_col * (gy + 1) + gx ].iCanPass = false
@@ -817,7 +836,7 @@ function Game:mousepressed(x, y, button)
 	
 			self.blockhouses[20 * gy + gx] = blockhouse
 			
-			-- ÉèÖÃµØÍ¼Î»ÖÃÎª²»¿ÉÒÔÍ¨¹ý
+			-- ï¿½ï¿½ï¿½Ãµï¿½Í¼Î»ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½
 			love.audio.play(sound["create_tower"])
 			self.money = self.money - tower_upgrade[i][1].buy_cost
 		end

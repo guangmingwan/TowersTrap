@@ -10,26 +10,26 @@
 
 love.filesystem.require = require
 
-love.filesystem.require("lua/vardump.lua")
-love.filesystem.require("lua/menu.lua")
-love.filesystem.require("lua/intruduc.lua")
-love.filesystem.require("lua/options.lua")
-love.filesystem.require("lua/weapons.lua")
-love.filesystem.require("lua/creature.lua")
+love.filesystem.require("lua/vardump")
+love.filesystem.require("lua/menu")
+love.filesystem.require("lua/intruduc")
+love.filesystem.require("lua/options")
+love.filesystem.require("lua/weapons")
+love.filesystem.require("lua/creature")
 
-love.filesystem.require("lua/ballet.lua")
-love.filesystem.require("lua/sniper.lua")
-love.filesystem.require("lua/rocket.lua")
-love.filesystem.require("lua/earthquake.lua")
-love.filesystem.require("lua/air.lua")
-love.filesystem.require("lua/cannon.lua")
-love.filesystem.require("lua/shock.lua")
-love.filesystem.require("lua/radar.lua")
-love.filesystem.require("lua/blockhouse.lua")
+love.filesystem.require("lua/ballet")
+love.filesystem.require("lua/sniper")
+love.filesystem.require("lua/rocket")
+love.filesystem.require("lua/earthquake")
+love.filesystem.require("lua/air")
+love.filesystem.require("lua/cannon")
+love.filesystem.require("lua/shock")
+love.filesystem.require("lua/radar")
+love.filesystem.require("lua/blockhouse")
 
-love.filesystem.require("lua/hint.lua")
-love.filesystem.require("lua/astar.lua")
-love.filesystem.require("lua/game.lua")
+love.filesystem.require("lua/hint")
+love.filesystem.require("lua/astar")
+love.filesystem.require("lua/game")
 
 
 

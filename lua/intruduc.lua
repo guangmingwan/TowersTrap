@@ -15,10 +15,15 @@ function Instructions:draw()
 
 	love.graphics.draw(graphics["logo"], love.graphics.getWidth( ) /2, love.graphics.getHeight( )/2)
 	love.graphics.setColor(color["menu_border"])
-	love.graphics.setLine(4,love.line_rough)
+	-- 设置线条宽度为 4
+	love.graphics.setLineWidth(4)
+
+	-- 设置线条样式为粗糙（"rough"），如果你想要平滑的线条，请使用 "smooth"
+	love.graphics.setLineStyle("rough")
 	love.graphics.rectangle( love.draw_line, 100, 0, love.graphics.getWidth( ) -200,  love.graphics.getHeight( ) ) 
 	love.graphics.setColor(color["menu_bg"])
-	love.graphics.setLine(1)
+	love.graphics.setLineWidth(1) -- 设置线条宽度为 1
+	love.graphics.setLineStyle("smooth") -- 设置线条样式为平滑
 	love.graphics.rectangle( love.draw_fill, 102, 2, love.graphics.getWidth( ) -204,  love.graphics.getHeight( )-4 ) 	
 	love.graphics.setColor(color["menu_text"])
 	love.graphics.setFont(font["intruduc"])

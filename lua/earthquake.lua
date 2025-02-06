@@ -33,30 +33,30 @@ function EarthQuake:update(dt)
 		self.shoot_time = self.shoot_time - 10 * dt
 	end
 	
-	if (self.target == nil) then --»ñÈ¡Ò»¸ötarget
+	if (self.target == nil) then --ï¿½ï¿½È¡Ò»ï¿½ï¿½target
 		for i,e in pairs(state.enemys) do
 
-			if (e.hidden~=true and e.number ~=6 -- ²»ÊÇ·É»ú
+			if (e.hidden~=true and e.number ~=6 -- ï¿½ï¿½ï¿½Ç·É»ï¿½
 			and (math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) ) then
 			    self.target = e
 			    e.locked = e.locked + 1
 			end
 		end
 	else
-        if(self.target.health <=0 ) then -- ¸ú×ÙµÄÄ¿±ê±»»÷±ÐÁË 
+        if(self.target.health <=0 ) then -- ï¿½ï¿½ï¿½Ùµï¿½Ä¿ï¿½ê±»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 			self.target = nil
 			return
 		end
 
-  		if(self.shoot_time <=0) then -- ÖÆÔìµØÕð 
-   			love.audio.play(sound["earthquake_fire"], 1)
+  		if(self.shoot_time <=0) then -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+   			love.audio.play(sound["earthquake_fire"])
    			self.shoot_time  = shoot_time
    			self.blockhouse.earthquake_action_r = 6
    			ballet =  Ballet.create(5, self,self.blockhouse.x ,self.blockhouse.y ,self.target)
    			ballet.live = 0
 
    			table.insert(state.ballets , ballet)
-   			-- ¼ÆËãËðÉË 
+   			-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
   		end
 
 		local e = self.target

@@ -26,11 +26,24 @@ function Ballet.create(type,host,x,y,target)
 	temp.from = 1
 	temp.live = 1
 	temp.time = 0
-	temp.host = host --×Óµ¯µÄËŞÖ÷
-	temp.type = type -- 0 ×Óµ¯,1 »ğ¼ı£¬2 ¼ÓÅ©ÅÚµ¯  3 ¼õËÙµ¯ 4 µØ¶Ô¿Õµ¼µ¯  5 µØÕğ 6 ·´ÒşĞÎÌ½²â 
+	temp.host = host --ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	temp.type = type -- 0 ï¿½Óµï¿½,1 ï¿½ï¿½ï¿½ï¿½ï¿½2 ï¿½ï¿½Å©ï¿½Úµï¿½  3 ï¿½ï¿½ï¿½Ùµï¿½ 4 ï¿½Ø¶Ô¿Õµï¿½ï¿½ï¿½  5 ï¿½ï¿½ï¿½ï¿½ 6 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ 
 	return temp
 end
+-- å®šä¹‰ä¸€ä¸ªæ–°å‡½æ•°ï¼Œç”¨äºæ›¿æ¢ love.graphics.draw
+local function drawWithDegrees(image, x, y, angleDegrees)
+	-- é»˜è®¤ç¼©æ”¾æ¯”ä¾‹è®¾ç½®ä¸º1ï¼Œå³ä¸è¿›è¡Œç¼©æ”¾
+    local scaleX, scaleY = 1, 1
+    -- å°†è§’åº¦ä»åº¦è½¬æ¢ä¸ºå¼§åº¦
+    local angleRadians = angleDegrees * (math.pi / 180)
 
+    -- è®¡ç®—å›¾åƒä¸­å¿ƒç‚¹çš„åç§»é‡
+    local originX = image:getWidth() / 2
+    local originY = image:getHeight() / 2
+
+    -- ä½¿ç”¨è½¬æ¢åçš„å¼§åº¦å€¼å’Œä¸­å¿ƒç‚¹åç§»è¿›è¡Œç»˜åˆ¶
+    love.graphics.draw(image, x, y, angleRadians, scaleX, scaleY, originX, originY)
+end
 function Ballet:draw()
 	
 	if self.type == 0 then
@@ -38,16 +51,17 @@ function Ballet:draw()
 		love.graphics.setColor(color.black)
 		love.graphics.circle(love.draw_fill, self.x, self.y, 2, 255) 
 	elseif self.type == 1 then --rocket
-		love.graphics.draw(graphics.rocket_fire, self.x, self.y, self.angle + 90)
+		drawWithDegrees(graphics.rocket_fire, self.x, self.y, self.angle + 90)
 	elseif self.type == 2 then -- cannon
-	    love.graphics.draw(graphics.canon_fire, self.x, self.y, self.angle + 90)
+		drawWithDegrees(graphics.canon_fire, self.x, self.y, self.angle + 90)
 	elseif self.type == 3 then -- slowdown
-	    love.graphics.draw(graphics.shock_fire, self.x, self.y, self.angle + self.x + self.y)
+	    drawWithDegrees(graphics.shock_fire, self.x, self.y, self.angle + self.x + self.y)
 	elseif self.type == 4 then --aim
-		love.graphics.draw(graphics.sa12_fire, self.x, self.y, self.angle)
+		drawWithDegrees(graphics.sa12_fire, self.x, self.y, self.angle)
 	elseif self.type == 6 then --radar
 		love.graphics.setColor(182, 204, 87)
-		love.graphics.setLine(1)
+		love.graphics.setLineWidth(1) -- è®¾ç½®çº¿æ¡å®½åº¦ä¸º 1
+		love.graphics.setLineStyle("smooth") -- è®¾ç½®çº¿æ¡æ ·å¼ä¸ºå¹³æ»‘
 		for i = 3,self.off_angle,3 do
 			love.graphics.circle(love.draw_line, self.x, self.y, i , 255)
 		end
@@ -58,7 +72,7 @@ function Ballet:update(dt)
 	
 	self.time = self.time + dt
 
-	--×Óµ¯ÒÆ¶¯
+	--ï¿½Óµï¿½ï¿½Æ¶ï¿½
 	--pr(b,"ballet")
 	if self.type == 1 then -- rocket
 	    self:rocketMove(dt)
@@ -103,7 +117,7 @@ function Ballet:rocketMove(dt)
 	end
 
 
-	if(self.time < range*7 / speed) then --ĞŞÕı¹ì¼£
+	if(self.time < range*7 / speed) then --ï¿½ï¿½ï¿½ï¿½ï¿½ì¼£
 		self.targetX = self.target.x
 		self.targetY = self.target.y
 	end
@@ -112,10 +126,10 @@ function Ballet:rocketMove(dt)
 		self.x = self.x - speed*math.sin(angle*math.pi/180)
 		self.y = self.y + speed*math.cos(angle*math.pi/180)
 	else
-		self.live = 0 --³¬¹ıÉä³Ì
+		self.live = 0 --ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	end
 	if self.target.x - self.x < 8 and self.target.y - self.y < 8 then
-	    self.live = 0 -- ÃüÖĞÄ¿±ê
+	    self.live = 0 -- ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
 	end
 end
 
@@ -132,10 +146,10 @@ function Ballet:gunTraceMove(dt)
 		self.x = self.x - speed*math.sin(angle*math.pi/180)
 		self.y = self.y + speed*math.cos(angle*math.pi/180)
 	else
-		self.live = 0 --³¬¹ıÉä³Ì
+		self.live = 0 --ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	end
 	if self.target.x - self.x < 8 and self.target.y - self.y < 8 then
-	    self.live = 0 -- ÃüÖĞÄ¿±ê
+	    self.live = 0 -- ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
 	    self.target.slowly = true
 	    self.target.slowly_time = 60
 	end
@@ -149,24 +163,24 @@ function Ballet:aimTraceMove(dt)
 	local dx = self.x - self.target.x
 	local dy = self.y - self.target.y
 
-	--//½ÇËÙ¶È
+	--//ï¿½ï¿½ï¿½Ù¶ï¿½
 	local omega = 4
---	//Ä¿±êÓëyÖáµÄ¼Ğ½Ç
+--	//Ä¿ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½Ä¼Ğ½ï¿½
 	local angle = ( 270 + math.atan2(dy, dx)*180/math.pi) % 360
---	//Ä¿±êÓëµ¼µ¯µÄ¼Ğ½Ç
+--	//Ä¿ï¿½ï¿½ï¿½ëµ¼ï¿½ï¿½ï¿½Ä¼Ğ½ï¿½
 	local crtangle = (angle - self.angle + 360) % 360
---	//ÅĞ¶Ïµ¼µ¯Ğı×ª·½Ïò
+--	//ï¿½Ğ¶Ïµï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
 	local dir =  ((crtangle<=180) and 1) or -1
 	self.angle = ((crtangle < 180 and crtangle > omega or crtangle > 180 and 360 - crtangle > omega) and self.angle + omega*dir) or angle
---	//ÒÆ¶¯µ¼µ¯
+--	//ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
  	if(self.time < 2.3) then
 		self.x = self.x + speed * math.sin(self.angle * math.pi/180)
 		self.y = self.y - speed * math.cos(self.angle * math.pi/180)
 	else
-	    self.live = 0 --³¬¹ıÉä³Ì
+	    self.live = 0 --ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	end
 	
 	if self.target.x - self.x < 8 and self.target.y - self.y < 8 then
-	    self.live = 0 -- ÃüÖĞÄ¿±ê
+	    self.live = 0 -- ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
 	end
 end

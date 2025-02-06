@@ -47,14 +47,14 @@ function Air:FindTargetsAndFire()
 
 	local firecount = 0
 	local aoff = 0
-	--获取一个target
+	--锟斤拷取一锟斤拷target
 
 	for i,e in pairs(state.enemys) do
 		if (e.number ==6 and firecount < on_shoot_bullet_count and
 		(math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range)) then
             firecount = firecount + 1
 			e.locked = e.locked + 1
-		    love.audio.play(sound["air_fire"], 1)
+		    love.audio.play(sound["air_fire"])
 			ballet = Ballet.create(4, self,self.blockhouse.x ,self.blockhouse.y ,e)
 			ballet.angle = aoff
 			aoff = aoff + 30
