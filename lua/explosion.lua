@@ -34,7 +34,7 @@ function Explosion:draw()
 	love.graphics.print(self.text, self.x, self.y)
 	love.graphics.setFont(font.impact_1)
 	--love.graphics.setColor(255,255,0,100*(self.delay/0.5))
-	love.graphics.setColor(255,255,0)
+	love.graphics.setColor(1,1,0)
 	--love.graphics.draw(self.text, self.x+1, self.y+1)
 	love.graphics.print(self.text, self.x+1, self.y+1)
 end

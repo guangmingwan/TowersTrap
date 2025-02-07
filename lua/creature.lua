@@ -193,7 +193,7 @@ function Creature:draw()
         local r, g, b, a = love.graphics.getColor()
 
         if self.hidden then
-            love.graphics.setColor(255, 255, 255, 100) -- 半透明白色
+            love.graphics.setColor(1, 1, 1, 100/255) -- 半透明白色
             drawWithDegrees(graphics["creature"][self.number], self.x, self.y, self.angle)
             love.graphics.setColor(r, g, b, a) -- 恢复原始颜色
         else

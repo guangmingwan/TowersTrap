@@ -67,15 +67,15 @@ function Blockhouse.create(weapon, mapgridpointer)
 	pr(temp.gun, "create blockhouse")
 	return temp
 end
-local function drawWithDegrees(image, x, y, angleDegrees)
+local function drawWithDegrees(self,image, x, y, angleDegrees)
 	-- 默认缩放比例设置为1，即不进行缩放
     local scaleX, scaleY = 1, 1
     -- 将角度从度转换为弧度
     local angleRadians = angleDegrees * (math.pi / 180)
 
     -- 计算图像中心点的偏移量
-    local originX = image:getWidth() / 2
-    local originY = image:getHeight() / 2
+    local originX = self.width / 2
+    local originY = self.height / 2
 
     -- 使用转换后的弧度值和中心点偏移进行绘制
     love.graphics.draw(image,  x+originX, y+originY, angleRadians, scaleX, scaleY, originX, originY)
@@ -85,13 +85,14 @@ function Blockhouse:draw()
 	local gridpointer = self.gridpointer
 	--self.angle = 0
 	-- 假设 self.angle 是以度为单位的角度值
-	
-	drawWithDegrees(graphics["blockhous"][i], self._x, self._y,self.angle)
+	love.graphics.setColor(1,1,1,1)
+	drawWithDegrees(self,graphics["blockhous"][i], self._x, self._y,self.angle)
 	if self.ice then
-	    love.graphics.setColor(255, 255, 255, 200)
+	    love.graphics.setColor(1, 1, 1, 200/255)
      	love.graphics.rectangle(love.draw_fill, self._x, self._y, 34, 34)
      	love.graphics.draw(graphics["bh_border_ice"], self._x, self._y)
 	else
+		love.graphics.setColor(1,1,1,1)
 		love.graphics.draw(graphics["bh_border"], self._x, self._y)
 	end
 
@@ -140,7 +141,7 @@ function Blockhouse:drawselector()
 
 		if(self.level < 5) then
 			love.graphics.rectangle( love.draw_fill, self._x, self._y - 17, 17*2, 17)
-			love.graphics.setColor(255,155,0)
+			love.graphics.setColor(255/255,155/255,0)
 			love.graphics.rectangle( love.draw_line, self._x + 1, self._y + 1 - 17, 17*2 - 2, 17 - 2)
 
 			local buy_cost = tower_upgrade[self.weapon][self.level +1 ].buy_cost
@@ -148,17 +149,17 @@ function Blockhouse:drawselector()
 			love.graphics.setFont(font["tiny"])
 			local textwidth = font["tiny"]:getWidth(buy_cost)
 			--love.graphics.draw( buy_cost, self.x - textwidth /2, self._y - textheight / 2 )
-			love.graphics.print( buy_cost, self.x - textwidth /2, self._y - textheight / 2 )
+			love.graphics.print( buy_cost, self.x - textwidth /2, self._y - textheight -5 )
 		end
 
 		local sell_cost = tower_upgrade[self.weapon][self.level].sell_cost
-		love.graphics.setColor(255,85,32)
+		love.graphics.setColor(1,85/255,32/255)
 		love.graphics.rectangle( love.draw_fill, self._x, self.y + 17, 17*2, 17)
 		love.graphics.setColor(color["yellow"])
 		love.graphics.setFont(font["tiny"])
 		local textwidth = font["tiny"]:getWidth(sell_cost)
 		--love.graphics.draw( sell_cost, self.x - textwidth /2, self.y + 17 + 17 - textheight / 2 )
-		love.graphics.print( sell_cost, self.x - textwidth /2, self.y + 17 + 17 - textheight / 2 )
+		love.graphics.print( sell_cost, self.x - textwidth /2, self.y + 17 + 12  - textheight )
 end
 
 function Blockhouse:update(dt)

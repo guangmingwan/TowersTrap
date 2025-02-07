@@ -51,15 +51,19 @@ function Ballet:draw()
 		love.graphics.setColor(color.black)
 		love.graphics.circle(love.draw_fill, self.x, self.y, 2, 255) 
 	elseif self.type == 1 then --rocket
+		love.graphics.setColor(1,1,1,1)
 		drawWithDegrees(graphics.rocket_fire, self.x, self.y, self.angle + 90)
 	elseif self.type == 2 then -- cannon
+		love.graphics.setColor(1,1,1,1)
 		drawWithDegrees(graphics.canon_fire, self.x, self.y, self.angle + 90)
 	elseif self.type == 3 then -- slowdown
+		love.graphics.setColor(1,1,1,1)
 	    drawWithDegrees(graphics.shock_fire, self.x, self.y, self.angle + self.x + self.y)
 	elseif self.type == 4 then --aim
+		love.graphics.setColor(1,1,1,1)
 		drawWithDegrees(graphics.sa12_fire, self.x, self.y, self.angle)
 	elseif self.type == 6 then --radar
-		love.graphics.setColor(182, 204, 87)
+		love.graphics.setColor(182, 204, 87, 255)
 		love.graphics.setLineWidth(1) -- 设置线条宽度为 1
 		love.graphics.setLineStyle("smooth") -- 设置线条样式为平滑
 		for i = 3,self.off_angle,3 do

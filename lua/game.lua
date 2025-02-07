@@ -19,6 +19,7 @@ size = 8
 time_UpdateCapiton = 0
 
 function Game.create()
+	love.graphics.setBlendMode('alpha')
 	music["game"]:setLooping(false)
 	love.audio.play(music["game"])
 	
@@ -282,6 +283,7 @@ function Game:draw()
 	--love.timer.sleep(2000)
 	--battlearea.left = self.x
 	--battlearea.top = self.y
+	love.graphics.setColor(1,1,1,1)
 	love.graphics.draw(graphics["battle_bg"], battlearea.left, battlearea.top)
 	
 	-- 假设 time_UpdateCapiton 是一个全局变量或类成员变量，用于控制更新频率
@@ -409,7 +411,7 @@ function Game:draw()
 				
 				-- 设置半透明效果（通过alpha通道）
 				local alpha = 255 - 150 * i / 5
-				love.graphics.setColor(255, 255, 255, alpha)
+				love.graphics.setColor(1, 1, 1, alpha/255)
 				
 				-- 设定混合模式为"alpha", 这是默认的混合模式，适用于大多数情况下的透明度处理
 				--love.graphics.setBlendMode("alpha")
@@ -470,7 +472,7 @@ function Game:draw()
 		--love.graphics.draw(shoot_time,94,604)
 		love.graphics.print(shoot_time, battlearea.left + 94, battlearea.top + 604)
 
-		love.graphics.setColor(225,85,32)
+		love.graphics.setColor(225/255,85/255,32/255)
 		if(damage_next~=nil) then
 			--love.graphics.draw(damage_next,144,570)
 			love.graphics.print(damage_next, battlearea.left + 144, battlearea.top + 570)
@@ -488,7 +490,7 @@ function Game:draw()
 	if self.win ~= -999 then
 		-- You won!
 		if self.win > 0 then
-			love.graphics.setColor(255,255,255,235-(100*(self.win/0.5)))
+			love.graphics.setColor(1,1,1,(235-(100*(self.win/0.5))/255))
 			love.graphics.rectangle(love.draw_fill, battlearea.left + 0, battlearea.top + 0, love.graphics.getWidth(), love.graphics.getHeight())
 		else
 			love.graphics.setColor(color["overlay"])
