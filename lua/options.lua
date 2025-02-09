@@ -6,8 +6,8 @@ Options.__index = Options
 function Options.create()
 	local temp = {}
 	setmetatable(temp, Options)
-	temp.button = {	on = Button.create("On", 425/2, 300),
-					off = Button.create("Off", 550/2, 300),
+	temp.button = {	on = Button.create("On", 240, 300),
+					off = Button.create("Off", 300, 300),
 					--five = Button.create(" 5 ", 375/2, 375),
 					--six = Button.create(" 6 ", 425/2, 375),
 					--seven = Button.create(" 7 ", 475/2, 375),
@@ -18,13 +18,27 @@ function Options.create()
 end
 
 function Options:draw()
-	
-	love.graphics.draw(graphics["logo"], love.graphics.getWidth( )/2, love.graphics.getHeight( ) /2)
+	love.graphics.setColor(1,1,1,1)
+	-- 绘制背景图片并调整大小适应窗口
+    love.graphics.draw(graphics["logo"], 0, 0, 0, love.graphics.getWidth() / graphics["logo"]:getWidth(), love.graphics.getHeight() / graphics["logo"]:getHeight())
+   
+	love.graphics.setColor(color["menu_border"])
+	-- 设置线条宽度为 4
+	love.graphics.setLineWidth(4)
+
+	-- 设置线条样式为粗糙（"rough"），如果你想要平滑的线条，请使用 "smooth"
+	love.graphics.setLineStyle("rough")
+	love.graphics.rectangle( love.draw_line, 100, 0, love.graphics.getWidth( ) -200,  love.graphics.getHeight( ) ) 
+	love.graphics.setColor(color["menu_bg"])
+	love.graphics.setLineWidth(1) -- 设置线条宽度为 1
+	love.graphics.setLineStyle("smooth") -- 设置线条样式为平滑
+	love.graphics.rectangle( love.draw_fill, 102, 2, love.graphics.getWidth( ) -204,  love.graphics.getHeight( )-4 ) 
+
 	
 	love.graphics.setColor(color["text"])
 	love.graphics.setFont(font["large"])
 	--love.graphics.draw("Audio:", 60, 300)
-	love.graphics.print("Audio:", 60, 300)
+	love.graphics.print("Audio:", 120, 300)
 	--love.graphics.draw("Level:", 60, 375)
 	
 	love.graphics.setColor(color["main"])

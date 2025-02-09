@@ -37,17 +37,17 @@ function Radar:update(dt)
 	local foundenemyscount = 0
 	for i,e in pairs(state.enemys) do
 
-		if(e.type == 4) then
+		if(e.number == 4) then
 			foundenemyscount = foundenemyscount + 1
 		end
 		if(e.hidden ==true and math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
       		e.hidden = false
-		    e.antihidden_time = 2
+		    e.antihidden_time = 2			
 		end
 	end
 
 	--self.ballet == false and 
-	if(self.shoot_time <=0 and foundenemyscount > 0) then -- ��ʾ�״�ɨ��
+	if(self.shoot_time <=0 and foundenemyscount > 0) then -- 显示雷达扫描
 		love.audio.play(sound["radar_fire"])
 		self.shoot_time = shoot_time
 		ballet = Ballet.create(6, self,self.blockhouse.x ,self.blockhouse.y ,self)

@@ -190,6 +190,8 @@ function Creature:draw()
     love.graphics.setColor(color["green"])
     love.graphics.rectangle("fill", self.x - m / 2, self.y - m / 2 - 5, m * self.health / self.blood, 2)
 
+	
+
     if self.freeze <= 0 then
         local r, g, b, a = love.graphics.getColor()
 
@@ -198,10 +200,12 @@ function Creature:draw()
             drawWithDegrees(graphics["creature"][self.number], self.x, self.y, self.angle)
             love.graphics.setColor(r, g, b, a) 
         else
+			love.graphics.setColor(1,1,1,1)
             drawWithDegrees(graphics["creature"][self.number], self.x, self.y, self.angle)
         end
 
         if self.slowly then
+			love.graphics.setColor(1,1,1,1)
             drawWithDegrees(graphics["star_circle"], self.x, self.y, self.angle + self.slowly_angle)
         end
 		-- ÏÔÊ¾µÐÈË×´Ì¬

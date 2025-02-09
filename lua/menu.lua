@@ -22,6 +22,7 @@ function Menu.create()
 end
 
 function Menu:draw()
+    love.graphics.setColor(1,1,1,1)
     -- 绘制背景图片并调整大小适应窗口
     love.graphics.draw(graphics["logo"], 0, 0, 0, love.graphics.getWidth() / graphics["logo"]:getWidth(), love.graphics.getHeight() / graphics["logo"]:getHeight())
     

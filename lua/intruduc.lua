@@ -12,8 +12,10 @@ function Instructions.create()
 end
 
 function Instructions:draw()
-
-	love.graphics.draw(graphics["logo"], love.graphics.getWidth( ) /2, love.graphics.getHeight( )/2)
+	love.graphics.setColor(1,1,1,1)
+	-- 绘制背景图片并调整大小适应窗口
+    love.graphics.draw(graphics["logo"], 0, 0, 0, love.graphics.getWidth() / graphics["logo"]:getWidth(), love.graphics.getHeight() / graphics["logo"]:getHeight())
+   
 	love.graphics.setColor(color["menu_border"])
 	-- 设置线条宽度为 4
 	love.graphics.setLineWidth(4)

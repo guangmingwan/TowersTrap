@@ -86,7 +86,14 @@ function Blockhouse:draw()
 	--self.angle = 0
 	-- 假设 self.angle 是以度为单位的角度值
 	love.graphics.setColor(1,1,1,1)
-	drawWithDegrees(self,graphics["blockhous"][i], self._x, self._y,self.angle)
+
+	-- 计算 blockhous 的中心点
+    local blockhous_center_x = self._x + graphics["bh_border"]:getWidth() / 2
+    local blockhous_center_y = self._y + graphics["bh_border"]:getHeight() / 2
+	-- 绘制 blockhous，使其中心点与 bh_border 对齐
+    drawWithDegrees(self, graphics["blockhous"][i], blockhous_center_x - graphics["blockhous"][i]:getWidth() / 2, blockhous_center_y - graphics["blockhous"][i]:getHeight() / 2, self.angle)
+   
+
 	if self.ice then
 	    love.graphics.setColor(1, 1, 1, 200/255)
      	love.graphics.rectangle(love.draw_fill, self._x, self._y, 34, 34)
@@ -119,7 +126,8 @@ function Blockhouse:draw()
 		love.graphics.setFont(font["tiny"])
  		love.graphics.setColor(color["text"])
 		--love.graphics.draw(string.format("x=%d,y=%d,w=%d,h=%d,s=%s,m=%s",self._x,self._y,self.width,self.height,s,h),self._x,self._y)
-		love.graphics.print(string.format("x=%d,y=%d,w=%d,h=%d,s=%s,m=%s",self._x,self._y,self.width,self.height,s,h),self._x,self._y)
+		love.graphics.print(string.format("x=%d,y=%d,w=%d,h=%d,s=%s,m=%s",self._x,self._y,self.width,self.height,s,h),self._x,self._y+50)
+		love.graphics.print(string.format("weapon=%d,gun.shoot_time=%d",self.weapon,self.gun.shoot_time),self._x,self._y+70)
 	end
 end
 
