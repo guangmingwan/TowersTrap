@@ -5,6 +5,15 @@
 Game = {}
 Game.__index = Game
 
+-- 定义武器类型的枚举表
+WeaponType = {
+    SNIPER = 1,
+    ROCKET = 2,
+	RANGE = 3,
+	AIR = 5,
+	EARTHQUAKE = 6
+}
+
 grid_col = 28
 grid_row = 32
 
@@ -183,8 +192,8 @@ function Game.create()
 	temp.time = temp.stages[1].time --时间
 	temp.stage = 0 -- 关卡
 	temp.blockhouses = {} -- 碉堡
-	temp.hints = {} --提示ʾ
-	temp.gselectedBlockhouse = nil;
+	temp.hints = {} --提示
+	temp.gselectedBlockhouse = nil; --选择的碉堡
 	
 	temp.enemys = {} --敌人
 	temp.ballets = {} -- 子弹 
@@ -392,11 +401,13 @@ function Game:draw()
 	-- draw scope
 	--love.graphics.draw(self.scope,350,50)
 	love.graphics.print(self.scope, battlearea.left + 350, battlearea.top + 50)
-	-- draw stage level
+	
     if(self.stage < #self.stages) then
+		-- draw stage level
 		--love.graphics.draw(self.stage,26,576)
 		love.graphics.print(self.stage, battlearea.left + 26, battlearea.top + 576)
 		
+		-- 绘制下个关卡入侵的生物
 		for i = 1,5 do
 			local draw_stage = self.stage + i;
 		   
@@ -431,6 +442,13 @@ function Game:draw()
 	-- draw weapons
 	self.weapons:draw()
 
+	-- draw blockhouse
+	for n,bh in pairs(self.blockhouses) do
+		if (bh.live == 1) then
+			bh:draw()
+		end
+	end
+
 	for n,e in pairs(self.enemys) do
 		e:draw()
 	end
@@ -441,12 +459,7 @@ function Game:draw()
 	for o,s in pairs(self.hints) do
 		s:draw()
 	end
-	-- draw blockhouse
-	for n,bh in pairs(self.blockhouses) do
-		if (bh.live == 1) then
-			bh:draw()
-		end
-	end
+	
 	
 	-- 画选择的武器的性能
 	if(self.gselectedBlockhouse ~=nil) then
@@ -574,7 +587,7 @@ function Game:update(dt)
 		self.gridpointer.x = gx
 		self.gridpointer.y = gy
 		end
-
+		--处理碉堡卖掉
 		for n,bh in pairs(self.blockhouses) do
 			if(bh.live == 0) then
 				-- 设置地图位置为可以通过
@@ -594,7 +607,7 @@ function Game:update(dt)
 				bh:update(dt)
 			end
 		end
-
+		--处理弹丸爆炸
 		for m,b in pairs(self.ballets) do
 		
 			if (b.live == 0) then -- 爆炸
@@ -603,7 +616,7 @@ function Game:update(dt)
 				--pr(b,"ballet")
 				local damage = tower_upgrade[weapon][level].damage
 				
-				if(weapon == 1) then --sniper
+				if(weapon == WeaponType.SNIPER) then --sniper
 					local e = b.target 
 					if(math.abs(e.x - b.x) < 16 and math.abs(e.y - b.y) < 16) then
 						e.health = e.health - damage
@@ -615,7 +628,7 @@ function Game:update(dt)
 							table.insert(self.hints,Hint.create("fly",e.award,e.x,e.y))
 						end
 					end
-				elseif (weapon == 2) then-- rocket
+				elseif (weapon == WeaponType.ROCKET) then-- rocket
 					for n,e in pairs(self.enemys) do
 						if(e.number ~= 6 and math.abs(e.x - b.x) < 16 and math.abs(e.y - b.y) < 16) then
 							e.health = e.health - damage
@@ -628,7 +641,7 @@ function Game:update(dt)
 							end
 						end
 					end
-    			elseif(weapon == 3) then --range
+    			elseif(weapon == WeaponType.RANGE) then --range
 					local e = b.target
 					if(math.abs(e.x - b.x) < 16 and math.abs(e.y - b.y) < 16) then
 						e.health = e.health - damage
@@ -640,7 +653,7 @@ function Game:update(dt)
 							table.insert(self.hints,Hint.create("fly",e.award,e.x,e.y))
 						end
 					end
-				elseif (weapon == 5) then -- air
+				elseif (weapon == WeaponType.AIR) then -- air
 				    local e = b.target
 					if(e.number == 6 and math.abs(e.x - b.x) < 16 and math.abs(e.y - b.y) < 16) then
 						e.health = e.health - damage
@@ -652,7 +665,7 @@ function Game:update(dt)
 							table.insert(self.hints,Hint.create("fly",e.award,e.x,e.y))
 						end
 					end
-				elseif (weapon == 6) then -- earthquake
+				elseif (weapon == WeaponType.EARTHQUAKE) then -- earthquake
 					local rangle = 6*7
 					for n,e in pairs(self.enemys) do
 						if(e.number ~= 6 and math.abs(e.x - b.x) < rangle and math.abs(e.y - b.y) < rangle) then
@@ -672,10 +685,12 @@ function Game:update(dt)
 				b:update(dt)
 			end
 		end
-
+		--切换关卡
 		self:switchStage(dt)
 		
 		self.weapons:update(dt)
+
+		--处理入侵的生物
 		for n,e in pairs(self.enemys) do
 			if(e.health <=0 ) then
 				table.remove(self.enemys,n)
@@ -687,7 +702,7 @@ function Game:update(dt)
 			end
 			
 		end
-		
+		--处理提示
 		for o,s in pairs(self.hints) do
 			if(s.delay >0) then
 				s:update(dt)
