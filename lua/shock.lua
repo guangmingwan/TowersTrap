@@ -32,7 +32,7 @@ function Shock:update(dt)
 	if(self.shoot_time >0) then
 		self.shoot_time = self.shoot_time - 10 * dt
 	end
-	if (self.target == nil) then --��ȡһ��target
+	if (self.target == nil) then --获取一个target
 		local lastwanttarget = nil
 		for i,e in pairs(state.enemys) do
 
@@ -52,7 +52,7 @@ function Shock:update(dt)
 			lastwanttarget.locked = lastwanttarget.locked + 1
 		end
 	else
-        if(self.target.health <=0 or self.target.slowly == true) then -- ���ٵ�Ŀ�걻�����˻������˼��ٵ� 
+        if(self.target.health <=0 or self.target.slowly == true) then -- 跟踪的目标被击毙了或者中了减速弹 
 			self.target = nil
 			return
 		end
@@ -65,7 +65,7 @@ function Shock:update(dt)
 		if(self.blockhouse.angle > angle ) then
 			self.blockhouse.angle = angle - 90 * dt  + 90
     	end
-  		if(self.shoot_time <=0 and math.abs(self.blockhouse.angle - 90 - angle)<5 ) then -- �����ӵ�
+  		if(self.shoot_time <=0 and math.abs(self.blockhouse.angle - 90 - angle)<5 ) then -- 发射子弹
    			love.audio.play(sound["slowdown_fire"])
    			self.shoot_time  = shoot_time
    			table.insert(state.ballets , Ballet.create(3, self,self.blockhouse.x ,self.blockhouse.y ,self.target))

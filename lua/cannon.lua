@@ -32,7 +32,7 @@ function Cannon:update(dt)
 	if(self.shoot_time >0) then
 		self.shoot_time = self.shoot_time - 10 * dt
 	end
-	if (self.target == nil) then --ï¿½ï¿½È¡Ò»ï¿½ï¿½target
+	if (self.target == nil) then --»ñÈ¡Ò»¸ötarget
 		for i,e in pairs(state.enemys) do
 
 			if(math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
@@ -41,7 +41,7 @@ function Cannon:update(dt)
 			end
 		end
 	else
-        if(self.target.health <=0 ) then -- ï¿½ï¿½ï¿½Ùµï¿½Ä¿ï¿½ê±»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if(self.target.health <=0 ) then -- ¸ú×ÙµÄÄ¿±ê±»»÷±ÐÁË
 			self.target = nil
 			return
 		end

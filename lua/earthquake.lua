@@ -33,22 +33,22 @@ function EarthQuake:update(dt)
 		self.shoot_time = self.shoot_time - 10 * dt
 	end
 	
-	if (self.target == nil) then --��ȡһ��target
+	if (self.target == nil) then --获取一个target
 		for i,e in pairs(state.enemys) do
 
-			if (e.hidden~=true and e.number ~=6 -- ���Ƿɻ�
+			if (e.hidden~=true and e.number ~=6 -- 不是飞机
 			and (math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) ) then
 			    self.target = e
 			    e.locked = e.locked + 1
 			end
 		end
 	else
-        if(self.target.health <=0 ) then -- ���ٵ�Ŀ�걻������ 
+        if(self.target.health <=0 ) then -- 跟踪的目标被击毙了 
 			self.target = nil
 			return
 		end
 
-  		if(self.shoot_time <=0) then -- ������� 
+  		if(self.shoot_time <=0) then -- 制造地震 
    			love.audio.play(sound["earthquake_fire"])
    			self.shoot_time  = shoot_time
    			self.blockhouse.earthquake_action_r = 6
@@ -56,7 +56,7 @@ function EarthQuake:update(dt)
    			ballet.live = 0
 
    			table.insert(state.ballets , ballet)
-   			-- �������� 
+   			-- 计算损伤 
   		end
 
 		local e = self.target

@@ -47,7 +47,7 @@ function Air:FindTargetsAndFire()
 
 	local firecount = 0
 	local aoff = 0
-	--��ȡһ��target
+	--获取一个target
 
 	for i,e in pairs(state.enemys) do
 		if (e.number ==6 and firecount < on_shoot_bullet_count and

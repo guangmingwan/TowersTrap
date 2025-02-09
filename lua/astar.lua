@@ -1,35 +1,37 @@
 --
---   A* Lua ÊµÏÖ
+--   A* Lua å®ç°
 --   By Jian
 --   Version 1.0
 --
 
--- ³£Á¿ --
-KMapWidth =  28              -- µØÍ¼µÄ¿í¶È£¨½ÚµãÊı£©
-KMapHeight =  32             -- µØÍ¼µÄ¸ß¶È£¨½ÚµãÊı£©
+-- å¸¸é‡ --
+KMapWidth =  28              -- åœ°å›¾çš„å®½åº¦ï¼ˆèŠ‚ç‚¹æ•°ï¼‰
+KMapHeight =  32             -- åœ°å›¾çš„é«˜åº¦ï¼ˆèŠ‚ç‚¹æ•°ï¼‰
 
---[[µØÍ¼½Úµã
+--[[
+
+ åœ°å›¾èŠ‚ç‚¹
 ]]
 CMapNode =
 {
-	iX = 0 ,                 -- ÔÚµØÍ¼ÖĞµÄ X ×ø±ê
-	iY = 0 ,                 -- ÔÚµØÍ¼ÖĞµÄ Y ×ø±ê
-	iIndex = 0 ,             -- ÔÚÒ»Î¬µØÍ¼Êı×éÖĞµÄÏÂ±ê
+	iX = 0 ,                 -- åœ¨åœ°å›¾ä¸­çš„ X åæ ‡
+	iY = 0 ,                 -- åœ¨åœ°å›¾ä¸­çš„ Y åæ ‡
+	iIndex = 0 ,             -- åœ¨ä¸€ç»´åœ°å›¾æ•°ç»„ä¸­çš„ä¸‹æ ‡
 
-	iFCost = 0 ,             -- A Star Ëã·¨ÖĞµÄ F ºÄ·Ñ
-	-- iGCost = 0 ,             -- A Star Ëã·¨ÖĞµÄ G ºÄ·Ñ
-	-- iHCost = 0 ,             -- A Star Ëã·¨ÖĞµÄ H ºÄ·Ñ
 
-	iIsInOpenList = false ,  -- ¸Ã½ÚµãÊÇ·ñÔÚ ¿ª·ÅÁĞ±í ÖĞ
-	iIsInCloseList = false , -- ¸Ã½ÚµãÊÇ·ñÔÚ ¹Ø±ÕÁĞ±í ÖĞ
+	iFCost = 0 ,             -- A Star ç®—æ³•ä¸­çš„ F è€—è´¹
+	-- iGCost = 0 ,             - A Star ç®—æ³•ä¸­çš„ G è€—è´¹
+	-- iHCost = 0 ,             - A Star ç®—æ³•ä¸­çš„ H è€—è´¹
 
-	iParent = nil ,          -- Ê¹ÓÃA Star ÇóÂ·¾¶¹ı³ÌÖĞ´æ´¢¸¸½Úµã
-	iNext = nil ,            -- ÔÚopenList ºÍ closeList ÖĞÖ¸ÏòÏÂÒ»¸öÔªËØ
+	iIsInOpenList = false ,  -- è¯¥èŠ‚ç‚¹æ˜¯å¦åœ¨ å¼€æ”¾åˆ—è¡¨ ä¸­
+	iIsInCloseList = false , -- è¯¥èŠ‚ç‚¹æ˜¯å¦åœ¨ å…³é—­åˆ—è¡¨ ä¸­
 
-	iCanPass = true          -- ¸Ã½ÚµãÊÇ·ñÊÇ¿ÉÍ¨¹ı½Úµã
+	iParent = nil ,          -- ä½¿ç”¨A Star æ±‚è·¯å¾„è¿‡ç¨‹ä¸­å­˜å‚¨çˆ¶èŠ‚ç‚¹
+	iNext = nil ,           -- åœ¨openList å’Œ closeList ä¸­æŒ‡å‘ä¸‹ä¸€ä¸ªå…ƒç´ 
+	iCanPass = true          -- è¯¥èŠ‚ç‚¹æ˜¯å¦æ˜¯å¯é€šè¿‡èŠ‚ç‚¹
 }
 
--- ¹¹Ôìº¯Êı --
+-- æ„é€ å‡½æ•° --
 function CMapNode:new(aIndex)
 	if (aIndex == nil) then
 		error(" the Index Can't be nil ") 
@@ -40,8 +42,8 @@ function CMapNode:new(aIndex)
 	setmetatable(ret, self)
 	
 	-- ######## Line too long (106 chars) ######## :
-	--ret.iX = aIndex - math.floor(aIndex / KMapWidth) * KMapWidth  -- ÇóÓà¡¢Î´Öª % ÎªÊ²Ã´±¨´í£¬ÊıÑ§¿âÒ²´ò¿ªÁË
-	--ret.iY = math.floor((aIndex - ret.iX) / KMapWidth)    -- Lua µÃ³öµÄÉÌÊÇ¸¡µãÊı
+	--ret.iX = aIndex - math.floor(aIndex / KMapWidth) * KMapWidth  -- æ±‚ä½™ã€æœªçŸ¥ % ä¸ºä»€ä¹ˆæŠ¥é”™ï¼Œæ•°å­¦åº“ä¹Ÿæ‰“å¼€äº†
+	--ret.iY = math.floor((aIndex - ret.iX) / KMapWidth)    -- Lua å¾—å‡ºçš„å•†æ˜¯æµ®ç‚¹æ•°
 	ret.iX = math.floor(aIndex % KMapWidth)
 	ret.iY = math.floor(aIndex / KMapWidth)
 	ret.iIndex = aIndex
@@ -50,7 +52,7 @@ function CMapNode:new(aIndex)
 end
 
 
--- »æÖÆº¯Êı --
+-- ç»˜åˆ¶å‡½æ•° --
 function CMapNode:DrawChar()
 	drawChar = nil
 
@@ -58,28 +60,31 @@ function CMapNode:DrawChar()
 		if ( self.iIsInOpenList ) then
 			drawChar = "1 "
 		else 
-			drawChar = "¡ò "
+			drawChar = "ï¿½ï¿½ "
 		end
 	else 
-		drawChar = "¡ö" 
+		drawChar = "ï¿½ï¿½" 
 	end
 
 	return drawChar
 end
 
--- »æÖÆ±í
+-- ç»˜åˆ¶è¡¨
 drawMap = {n = KMapWidth *  KMapHeight}
 
--- ³õÊ¼»¯µØÍ¼±í --
+-- åˆå§‹åŒ–åœ°å›¾è¡¨ --
 Map = {n = KMapWidth *  KMapHeight}
 for x = 0 , Map.n - 1 do
 	Map[x] = CMapNode:new(x)
 end
 
---[[µØÍ¼±í
+--[[
+
+ åœ°å›¾è¡¨
 ]]
 
---»æÖÆº¯Êı --
+
+--ç»˜åˆ¶å‡½æ•° --
 function Map:Draw()
 	local drawString = ""
 	for x = 0, KMapWidth * KMapHeight do
@@ -94,15 +99,16 @@ function Map:Draw()
 end
 
 
---[[µØÍ¼½ÚµãÁĞ±í£¨Á´±í½á¹¹£©
-]]
+--[[
 
+åœ°å›¾èŠ‚ç‚¹åˆ—è¡¨ï¼ˆé“¾è¡¨ç»“æ„ï¼‰
+]]
 NodeList =
 {
-	iRoot = nil        -- ¸ù½Úµã
+	iRoot = nil        -- æ ¹èŠ‚ç‚¹
 }
 
--- ¹¹Ôìº¯Êı --
+-- æ„é€ å‡½æ•° --
 function NodeList:new()
 	ret = {}
 	self.__index = self
@@ -111,21 +117,21 @@ function NodeList:new()
 	return ret
 end
 
--- Ïú»ÙÁ´±í
+-- é”€æ¯é“¾è¡¨
 function NodeList:Clear()
 	self.iRoot = nil
 end
 
--- Ôö¼ÓÒ»¸öNodeµ½ÁĞ±í --
+-- å¢åŠ ä¸€ä¸ªNodeåˆ°åˆ—è¡¨ --
 function NodeList:AddNode(aMapNode)
 	if (self.iRoot == nil) then
 		self.iRoot = aMapNode
 		return
 	end
 
-	-- ÕÒ³öµÚÒ»¸ö iFCost ±ÈËü´óµÄNode£¬²åÔÚËüµÄÇ°Ãæ
-	local curNode = self.iRoot    -- µ±Ç°½Úµã
-	local lastNode = nil          -- Ç°Ò»½Úµã
+	 -- æ‰¾å‡ºç¬¬ä¸€ä¸ª iFCost æ¯”å®ƒå¤§çš„Nodeï¼Œæ’åœ¨å®ƒçš„å‰é¢
+	local curNode = self.iRoot    -- å½“å‰èŠ‚ç‚¹
+	local lastNode = nil          -- å‰ä¸€èŠ‚ç‚¹
 	while (curNode) do
 		if (curNode.iFCost >= aMapNode.iFCost) then
 			aMapNode.iNext = curNode
@@ -143,10 +149,10 @@ function NodeList:AddNode(aMapNode)
 	lastNode.iNext = aMapNode
 end
 
--- ÔÚÁĞ±íÖĞÉ¾³ıÒ»¸öNode --
+-- åœ¨åˆ—è¡¨ä¸­åˆ é™¤ä¸€ä¸ªNode --
 function NodeList:DeleteNode(aMapNode)
-	local curNode = self.iRoot    -- µ±Ç°½Úµã
-	local lastNode = nil          -- Ç°Ò»½Úµã
+	local curNode = self.iRoot    -- å½“å‰èŠ‚ç‚¹
+	local lastNode = nil          -- å‰ä¸€èŠ‚ç‚¹
 
 	while (curNode) do
 		if (curNode == aMapNode) then
@@ -166,231 +172,252 @@ function NodeList:DeleteNode(aMapNode)
 	error( "The Node you deleted is not in the list !")
 end
 
--- ¿ªÆôÁĞ±í
+-- å¼€å¯åˆ—è¡¨
 openList = NodeList:new()
 
--- Ìí¼ÓÒ»¸öNodeµ½¿ª·¢ÁĞ±í
+-- æ·»åŠ ä¸€ä¸ªNodeåˆ°å¼€å‘åˆ—è¡¨
 function openList:Add( aMapNode )
-	aMapNode.iIsInOpenList = true
-	self:AddNode( aMapNode )
+ aMapNode.iIsInOpenList = true
+ self:AddNode( aMapNode )
 end
 
--- ´Ó¿ª·¢ÁĞ±íÖĞÒÆ³ıÒ»¸öNode
+-- ä»å¼€å‘åˆ—è¡¨ä¸­ç§»é™¤ä¸€ä¸ªNode
 function openList:Remove( aMapNode )
-	aMapNode.iIsInOpenList = false
-	self:DeleteNode( aMapNode )
+ aMapNode.iIsInOpenList = false
+ self:DeleteNode( aMapNode )
 end
 
--- ¹Ø±ÕÁĞ±í
+
+-- å…³é—­åˆ—è¡¨
 closeList = NodeList:new()
 
--- Ìí¼ÓÒ»¸öNodeµ½¹Ø±ÕÁĞ±í
+-- æ·»åŠ ä¸€ä¸ªNodeåˆ°å…³é—­åˆ—è¡¨
 function closeList:Add( aMapNode )
-	aMapNode.iIsInCloseList = true
-	self:AddNode( aMapNode )
+ aMapNode.iIsInCloseList = true
+ self:AddNode( aMapNode )
 end
 
---[[A Star Ñ°Â·Ö÷º¯Êı
+--[[
+
+A Star å¯»è·¯ä¸»å‡½æ•°
 ]]
 function AStarInit()
-	print(" AStarInit() ")
+    print(" AStarInit() ")
 	openList:Clear()
 	closeList:Clear()
-	
-	-- ³õÊ¼»¯µØÍ¼±í --
+	-- åˆå§‹åŒ–åœ°å›¾è¡¨ --
 	for x = 0 , Map.n - 1 do
-		Map[x].iIsInOpenList = false   -- ¸Ã½ÚµãÊÇ·ñÔÚ ¿ª·ÅÁĞ±í ÖĞ
-		Map[x].iIsInCloseList = false  -- ¸Ã½ÚµãÊÇ·ñÔÚ ¿ª·ÅÁĞ±í ÖĞ
-		Map[x].iParent = nil
-		Map[x].iNext = nil
+	Map[x].iIsInOpenList = false   -- è¯¥èŠ‚ç‚¹æ˜¯å¦åœ¨ å¼€æ”¾åˆ—è¡¨ ä¸­
+	Map[x].iIsInCloseList = false  -- è¯¥èŠ‚ç‚¹æ˜¯å¦åœ¨ å¼€æ”¾åˆ—è¡¨ ä¸­
+	Map[x].iParent = nil
+	Map[x].iNext = nil
 	end
+
 end
 
 -- 
-function AStarPathFind(aStartIndex, aEndIndex)
-	print(string.format("AStarPathFind(%d,%d)", aStartIndex, aEndIndex))
-	
-	-- ######## Line too long (94 chars) ######## :
-	if (aStartIndex < 0 and aStartIndex > Map.n) then error("StartIndex Out Off bound ")  end
-	-- ######## Line too long (88 chars) ######## :
-	if (aEndIndex < 0 and aEndIndex > Map.n) then error("EndIndex Out Off bound ")  end
+function AStarPathFind( aStartIndex, aEndIndex )
 
-	-- Ê×ÏÈ°ÑÆğÊ¼½ÚµãÌí¼Óµ½¿ªÆôÁĞ±í
-	local H = HDistance(aStartIndex, aEndIndex)
-	local G = 1
-	Map[aStartIndex].iFCost = H + G
+	print(string.format("AStarPathFind(%d,%d)",aStartIndex,aEndIndex))
+-- ######## Line too long (94 chars) ######## :
+  if ( aStartIndex < 0 and aStartIndex > Map.n ) then error( "StartIndex Out Off bound ")  end
+-- ######## Line too long (88 chars) ######## :
+  if ( aEndIndex < 0 and aEndIndex > Map.n ) then error( "EndIndex Out Off bound ")  end
 
-	openList:AddNode(Map[aStartIndex])
+-- é¦–å…ˆæŠŠèµ·å§‹èŠ‚ç‚¹æ·»åŠ åˆ°å¼€å¯åˆ—è¡¨
+local H = HDistance( aStartIndex , aEndIndex )
+local G = 1
+Map[aStartIndex].iFCost = H + G
 
-	while (true) do
-		-- È¡³öopenListÖĞµÄF×îÉÙÖµ
-		-- ²¢ÅĞ¶ÏopenListÊÇ·ñÎª¿Õ
-		leaseFNode = openList.iRoot
-		if (leaseFNode == nil) then break end
+openList:AddNode( Map[aStartIndex] )
 
-		-- ´Ó¿ª·ÅÁĞ±íÖĞÒÆ³ı¸Ã½Úµã
-		openList:Remove(leaseFNode)
+while ( true ) do
 
-		-- Ìí¼Óµ½¹Ø±ÕÁĞ±í
-		closeList:Add(leaseFNode)
+ -- å–å‡ºopenListä¸­çš„Fæœ€å°‘å€¼
+ -- å¹¶åˆ¤æ–­openListæ˜¯å¦ä¸ºç©º
+ leaseFNode = openList.iRoot
+ if ( leaseFNode == nil ) then break end
 
-		-- °Ñ¸Ã½Úµã¸½½üµÄ½ÚµãÌí¼Óµ½ ¿ª·ÅÁĞ±í
-		-- ²¢¸ù¾İº¯Êı·µ»ØÖµÅĞ¶ÏÊÇ·ñÒÑ¾­ÕÒµ½Â·¾¶
-		if (AddNeighborToOpenList(leaseFNode, aEndIndex)) then break end
-	end -- end while
+ -- ä»å¼€æ”¾åˆ—è¡¨ä¸­ç§»é™¤è¯¥èŠ‚ç‚¹
+ openList:Remove( leaseFNode )
+
+  -- æ·»åŠ åˆ°å…³é—­åˆ—è¡¨
+ closeList:Add( leaseFNode )
+
+ -- æŠŠè¯¥èŠ‚ç‚¹é™„è¿‘çš„èŠ‚ç‚¹æ·»åŠ åˆ° å¼€æ”¾åˆ—è¡¨
+ -- å¹¶æ ¹æ®å‡½æ•°è¿”å›å€¼åˆ¤æ–­æ˜¯å¦å·²ç»æ‰¾åˆ°è·¯å¾„
+ if ( AddNeighborToOpenList( leaseFNode, aEndIndex ) ) then break  end
+
+
+end -- end while
+
 end
 
--- »ñÈ¡H ¹ÀËãÖµ
-function HDistance(aStartIndex, aEndIndex)
-	local tmp1 = math.abs(Map[aStartIndex].iX - Map[aEndIndex].iX)
-	local tmp2 = math.abs(Map[aStartIndex].iY - Map[aEndIndex].iY)
+-- è·å–H ä¼°ç®—å€¼
+function HDistance( aStartIndex, aEndIndex )
 
-	--local tmp1 = Map[aStartIndex].iX - Map[aEndIndex].iX
-	--local tmp2 = Map[aStartIndex].iY - Map[aEndIndex].iY
-	
-	--if ( tmp1 <= 0 ) then tmp1 = -tmp1 end
-	--if ( tmp2 <= 0 ) then tmp2 = -tmp2 end
+local tmp1 = math.abs(Map[aStartIndex].iX - Map[aEndIndex].iX)
+local tmp2 = math.abs(Map[aStartIndex].iY - Map[aEndIndex].iY)
 
-	return ( ( tmp1^2 + tmp2^2 )^0.5 )
+--local tmp1 = Map[aStartIndex].iX - Map[aEndIndex].iX
+--local tmp2 = Map[aStartIndex].iY - Map[aEndIndex].iY
+--
+--if ( tmp1 <= 0 ) then tmp1 = -tmp1 end
+--if ( tmp2 <= 0 ) then tmp2 = -tmp2 end
+
+return ( ( tmp1^2 + tmp2^2 )^0.5 )
 end
 
--- °ÑÖ¸¶¨½Úµã¸½½üµÄ½ÚµãÌí¼Óµ½ ¿ª·ÅÁĞ±í
--- ·µ»ØÊÇ·ñÒÑ¾­µ½´ïÄ¿±ê½Úµã
-function AddNeighborToOpenList(aMapNode, aEndIndex)
-	ret = false   -- ·µ»ØÖµ
 
-	local tmpNode = nil
-	local aIndex = nil
+-- æŠŠæŒ‡å®šèŠ‚ç‚¹é™„è¿‘çš„èŠ‚ç‚¹æ·»åŠ åˆ° å¼€æ”¾åˆ—è¡¨
+-- è¿”å›æ˜¯å¦å·²ç»åˆ°è¾¾ç›®æ ‡èŠ‚ç‚¹
+function AddNeighborToOpenList( aMapNode, aEndIndex )
 
-	for aY = aMapNode.iY-1, aMapNode.iY+1  do
-		for aX = aMapNode.iX-1, aMapNode.iX+1  do
-			-- ±ß½ç¼ì²é
-			if ( aX >= 0 and aX < KMapWidth and aY >= 0 and aY < KMapHeight ) then
-				aIndex = aX + aY * KMapWidth
-				tmpNode = Map[aIndex]
+ret = false   -- è¿”å›å€¼
 
-				-- ÅĞ¶ÏÊÇ·ñÊÇ½áÊø½Úµã
-				if ( aIndex == aEndIndex ) then
-					ret = true
-					tmpNode.iParent = aMapNode
-					break
-				end
-				if tmpNode == nil then
-					print(string.format("ERROR:tempNode(%d) is nil!",aIndex))
-				end
-				-- ÅĞ¶Ï¸Ã½ÚµãÊÇ·ñ¿ÉÍ¨¹ı
-				if ( tmpNode.iCanPass ) then
-					-- ÊÇ·ñÒÑ¾­ÔÚ¹Ø±ÕÁĞ±íÖĞ
-					if ( tmpNode.iIsInCloseList == false ) then
-						local H = HDistance( tmpNode.iIndex , aEndIndex )
-						local G = 1     -- ¼òµ¥µÄ¶¨Îª1
-						local F = H + G
+local tmpNode = nil
+local aIndex = nil
 
-						-- ÊÇ·ñÔÚ¿ª·¢ÁĞ±íÖĞ
-						if ( tmpNode.iIsInOpenList == true ) then
-							-- ÅĞ¶ÏÊÇ·ñÏÖÔÚµÄÂ·¾¶¸üºÃ
-							if( F < tmpNode.iFCost ) then
-								tmpNode.iFCost = F
-								tmpNode.iParent = aMapNode
-							end
-						else
-							tmpNode.iFCost = F
-							tmpNode.iParent = aMapNode
+for aY = aMapNode.iY-1, aMapNode.iY+1  do
+ for aX = aMapNode.iX-1, aMapNode.iX+1  do
 
-							-- Ìí¼Óµ½¿ª·¢ÁĞ±íÖĞ
-							openList:Add( tmpNode )
-						end  -- end ÊÇ·ñÔÚ¿ª·¢ÁĞ±íÖĞ
+ -- è¾¹ç•Œæ£€æŸ¥
+ if ( aX >= 0 and aX < KMapWidth and aY >= 0 and aY < KMapHeight ) then
 
-					end   -- end ÊÇ·ñÒÑ¾­ÔÚ¹Ø±ÕÁĞ±íÖĞ
-				end  -- end ÅĞ¶Ï¸Ã½ÚµãÊÇ·ñ¿ÉÍ¨¹ı
+  aIndex = aX + aY * KMapWidth
+  tmpNode = Map[aIndex]
 
-			end -- end ±ß½ç¼ì²é
+  -- åˆ¤æ–­æ˜¯å¦æ˜¯ç»“æŸèŠ‚ç‚¹
+  if ( aIndex == aEndIndex ) then
+  ret = true
+  tmpNode.iParent = aMapNode
+  break
+ end
+ if tmpNode == nil then
+	print(string.format("ERROR:tempNode(%d) is nil!",aIndex))
+ end
+ -- åˆ¤æ–­è¯¥èŠ‚ç‚¹æ˜¯å¦å¯é€šè¿‡
+ if ( tmpNode.iCanPass ) then
+    -- æ˜¯å¦å·²ç»åœ¨å…³é—­åˆ—è¡¨ä¸­
+  if ( tmpNode.iIsInCloseList == false ) then
+	   local H = HDistance( tmpNode.iIndex , aEndIndex )
+	   local G = 1     -- ç®€å•çš„å®šä¸º1
+	   local F = H + G
 
-		end -- end for
-	end -- end for
+	   -- æ˜¯å¦åœ¨å¼€å‘åˆ—è¡¨ä¸­
+	   if ( tmpNode.iIsInOpenList == true ) then
+	     -- åˆ¤æ–­æ˜¯å¦ç°åœ¨çš„è·¯å¾„æ›´å¥½
+	     if( F < tmpNode.iFCost ) then
+	     tmpNode.iFCost = F
+	   tmpNode.iParent = aMapNode
+	     end
 
-	return ret
+	   else
+	    tmpNode.iFCost = F
+	    tmpNode.iParent = aMapNode
+
+	   -- æ·»åŠ åˆ°å¼€å‘åˆ—è¡¨ä¸­
+	   openList:Add( tmpNode )
+	   end  -- end æ˜¯å¦åœ¨å¼€å‘åˆ—è¡¨ä¸­
+
+  end   -- end æ˜¯å¦å·²ç»åœ¨å…³é—­åˆ—è¡¨ä¸­
+ end  -- end åˆ¤æ–­è¯¥èŠ‚ç‚¹æ˜¯å¦å¯é€šè¿‡
+
+ end -- end è¾¹ç•Œæ£€æŸ¥
+
+ end -- end for
+end -- end for
+
+return ret
+
 end
 
--- 
 function setblock(i)
-	if(i == 0) then
-		for x = 30, 37 do
-			Map[x].iCanPass = false
-			drawMap[x] = 1
-		end
-	else
-		for x = 65 , 77 do
-			Map[x].iCanPass = false
-			drawMap[x] = 1
-		end
-	end
+
+ if(i == 0) then
+	 for x = 30, 37 do
+	   Map[x].iCanPass = false
+	   drawMap[x] = 1
+	 end
+ else
+
+	 for x = 65 , 77 do
+	   Map[x].iCanPass = false
+	   drawMap[x] = 1
+	 end
+ end
 end
 
--- 
 function AStarDrawPath(endIndex)
-	node = Map[endIndex]
+ node = Map[endIndex]
 
-	while( node.iParent ) do
-		drawMap[node.iIndex] = 2
-		node = node.iParent
-	end
-	-- »æÖÆ
-	local drawString = ""
-	for x = 0 , drawMap.n - 1 do
-		if ( Map[x].iX == 0 ) then
-			print( drawString )
-			drawString = ""
-		end -- end if
+ while( node.iParent ) do
+   drawMap[node.iIndex] = 2
+   node = node.iParent
+ end
+  -- ç»˜åˆ¶
+ local drawString = ""
+ for x = 0 , drawMap.n - 1 do
 
-		if ( drawMap[x] == 1 ) then
-			drawString = drawString .. "¡ô"     -- ´ú±í²»¿ÉÍ¨ĞĞµã
-		elseif ( drawMap[x] == 2 )  then
-			drawString = drawString .. "¡ï"     -- ´ú±íÕÒµ½µÄÂ·¾¶µã
-		else
-			drawString = drawString .. "¡ù"     -- ÆäËû¿ÉÍ¨ĞĞµã
-		end
-	end
-end
- 
+    if ( Map[x].iX == 0 ) then
+    print( drawString )
+    drawString = ""
+    end -- end if
 
---[[ Test mainº¯Êı
+    if ( drawMap[x] == 1 ) then
+      drawString = drawString .. "â—†"     -- ä»£è¡¨ä¸å¯é€šè¡Œç‚¹
+    elseif ( drawMap[x] == 2 )  then
+      drawString = drawString .. "â˜…"     -- ä»£è¡¨æ‰¾åˆ°çš„è·¯å¾„ç‚¹
+    else
+      drawString = drawString .. "â€»"     -- å…¶ä»–å¯é€šè¡Œç‚¹
+    end
+ end
+ end
+--[[
+
+Test mainå‡½æ•°
 ]]
 function main()
-	startIndex = 0
-	endIndex = 214
 
-	-- »æÖÆ±í
-	drawMap = { n = KMapWidth *  KMapHeight }
+ startIndex = 0
+ endIndex = 214
 
-	local x = os.clock()
-	print(" Path Finding ")
+ -- ç»˜åˆ¶è¡¨
+ drawMap = { n = KMapWidth *  KMapHeight }
 
-	local l = 3
-	for i=1,l do
-		AStarInit()
-		setblock(i-1)
-		--setblock(1)
-		AStarPathFind( startIndex , endIndex )
-		--AStarOutString()
-		AStarDrawPath(endIndex)
-	end
-	print(" Path Finding done , loop  " .. l)
-	print(string.format("elapsed time: %.6f\n", os.clock() - x))
-	
-	--[[ 
-	local closeNode = closeList.iRoot
 
-	local closeNodeCount = 0
-	while( closeNode ) do
-		print( closeNode.iIndex )
-		closeNode = closeNode.iNext
-		closeNodeCount = closeNodeCount + 1
-	end
-	print( "closeNodeCount is" , closeNodeCount )
-	--]] 
+
+ local x = os.clock()
+ print(" Path Finding ")
+
+ local l = 2
+ for i=1,l do
+ AStarInit()
+ setblock(i-1)
+ --setblock(1)
+ AStarPathFind( startIndex , endIndex )
+
+
+
+
+
+
+
+ AStarOutString()
+
+ end
+ print(" Path Finding done , loop  " .. l)
+ print(string.format("elapsed time: %.6f\n", os.clock() - x))
+-- local closeNode = closeList.iRoot
+--
+-- local closeNodeCount = 0
+-- while( closeNode ) do
+--   print( closeNode.iIndex )
+--   closeNode = closeNode.iNext
+--   closeNodeCount = closeNodeCount + 1
+-- end
+--
+-- print( "closeNodeCount is" , closeNodeCount )
 end
 
---[[ for test
-main() 
---]] 
+--main()

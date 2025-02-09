@@ -1,12 +1,12 @@
-//Ä¿±êËÙ¶È
+//ç›®æ ‡é€Ÿåº¦
 var speed:Number = 12;
-//Ä¿µÄµØÎ»ÖÃ
+//ç›®çš„åœ°ä½ç½®
 var pos:Point = new Point(300,250);
-//µ¼µ¯ËÙ¶È
+//å¯¼å¼¹é€Ÿåº¦
 var misslespeed:Number = 10;
-//½ÇËÙ¶È
+//è§’é€Ÿåº¦
 var omega:Number = 8;
-//Ìí¼Ó´¦ÀíÊÂ¼ş
+//æ·»åŠ å¤„ç†äº‹ä»¶
 stage.addEventListener(MouseEvent.MOUSE_MOVE, moveHandler);
 mcTarget.addEventListener(Event.ENTER_FRAME, targetMove);
 mcMissile.addEventListener(Event.ENTER_FRAME, missileTrack);
@@ -14,33 +14,33 @@ mcMissile.addEventListener(Event.ENTER_FRAME, missileTrack);
 function moveHandler(e:MouseEvent):void{	
 	pos = new Point(e.localX,e.localY);
 }
-//Ä¿±êÏò¹â±êÎ»ÖÃÒÆ¶¯
+//ç›®æ ‡å‘å…‰æ ‡ä½ç½®ç§»åŠ¨
 function targetMove(e:Event):void{
-	//¼ÆËãÄ¿±êÓëÊó±êµ±Ç°Î»ÖÃµÄ¾àÀë
+	//è®¡ç®—ç›®æ ‡ä¸é¼ æ ‡å½“å‰ä½ç½®çš„è·ç¦»
 	var dx:Number = pos.x-mcTarget.x;
     var dy:Number = pos.y-mcTarget.y;
-	//¼ÆËãÄ¿±êÓëÊó±êÎ»ÖÃµÄ¼Ğ½Ç
+	//è®¡ç®—ç›®æ ‡ä¸é¼ æ ‡ä½ç½®çš„å¤¹è§’
 	var angle = (270 + Math.atan2(dy, dx)*180/Math.PI)%360;
-	//ÒÆ¶¯Ä¿±ê
+	//ç§»åŠ¨ç›®æ ‡
 	if(Math.abs(dx)>speed || Math.abs(dy)>speed){
 		mcTarget.x -= speed*Math.sin(angle*Math.PI/180);	
 		mcTarget.y += speed*Math.cos(angle*Math.PI/180);
 	}	
 }
-//µ¼µ¯¸ú×Ù
+//å¯¼å¼¹è·Ÿè¸ª
 function missileTrack(e:Event):void{
 	var dx:Number = mcMissile.x-mcTarget.x;
     var dy:Number = mcMissile.y-mcTarget.y;
-	//Ä¿±êÓëyÖáµÄ¼Ğ½Ç
+	//ç›®æ ‡ä¸yè½´çš„å¤¹è§’
     var angle = (270 + Math.atan2(dy, dx)*180/Math.PI)%360;
-	//Ä¿±êÓëµ¼µ¯µÄ¼Ğ½Ç
+	//ç›®æ ‡ä¸å¯¼å¼¹çš„å¤¹è§’
 	var crtangle = (angle - mcMissile.rotation + 360)%360;
-	//ÅĞ¶Ïµ¼µ¯Ğı×ª·½Ïò
+	//åˆ¤æ–­å¯¼å¼¹æ—‹è½¬æ–¹å‘
 	var dir:Number = crtangle<=180?1:-1;
 	mcMissile.rotation = (crtangle<180 && crtangle>omega || 
 						  crtangle>180 && 360-crtangle>omega)? 
 						 (mcMissile.rotation+omega*dir) : angle;
-	//ÒÆ¶¯µ¼µ¯
+	//ç§»åŠ¨å¯¼å¼¹
 	mcMissile.x += misslespeed*Math.sin(mcMissile.rotation*Math.PI/180);	
 	mcMissile.y -= misslespeed*Math.cos(mcMissile.rotation*Math.PI/180);
 }

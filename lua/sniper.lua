@@ -32,7 +32,7 @@ function Sniper:update(dt)
 	if(self.shoot_time >0) then
 		self.shoot_time = self.shoot_time - 10 * dt
 	end
-	if (self.target == nil) then --��ȡһ��target
+	if (self.target == nil) then --获取一个target
 		for i,e in pairs(state.enemys) do
 
 			if(e.hidden~=true and math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
@@ -41,7 +41,7 @@ function Sniper:update(dt)
 			end
 		end
 	else
-        if(self.target.health <=0 ) then -- ���ٵ�Ŀ�걻������ 
+        if(self.target.health <=0 ) then -- 跟踪的目标被击毙了 
 			self.target = nil
 			return
 		end
@@ -54,7 +54,7 @@ function Sniper:update(dt)
 		if(self.blockhouse.angle > angle ) then
 			self.blockhouse.angle = angle - 90 * dt  + 90
     	end
-  		if(self.shoot_time <=0 and math.abs(self.blockhouse.angle - 90 - angle)<5 ) then -- �����ӵ�
+  		if(self.shoot_time <=0 and math.abs(self.blockhouse.angle - 90 - angle)<5 ) then -- 发射子弹
    			love.audio.play(sound["sniper_fire"])
    			self.shoot_time  = shoot_time
    			table.insert(state.ballets , Ballet.create(0, self,self.blockhouse.x ,self.blockhouse.y ,self.target))

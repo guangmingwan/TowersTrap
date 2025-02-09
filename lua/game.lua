@@ -40,9 +40,9 @@ function Game.create()
 	temp.height = love.graphics.getHeight()
 
 	--[[
-  	��ͼ��
+  	地图表
 	]]
-	--temp.maps = {} -- ��ͼ
+	--temp.maps = {} -- 地图
 	temp.maps = {
 				1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,
 				1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,
@@ -86,7 +86,7 @@ function Game.create()
 	   	end
 	end
 	
-    temp.stages ={ --�ؿ����
+    temp.stages ={ --关卡设计
 				{ time = 20, creature = 0, number = 10 },
 				{ time = 20, creature = 1, number = 20 }, 
 				{ time = 20, creature = 2, number = 20 }, 
@@ -177,23 +177,24 @@ function Game.create()
 				
 				}
 	
-	temp.scope = 0 --����
-	temp.money = 8000 --Ǯ
-	temp.health = 50 --����
-	temp.time = temp.stages[1].time --ʱ��
-	temp.stage = 0 -- �ؿ�
-	temp.blockhouses = {} -- �ﱤ
-	temp.hints = {} --��ʾ
+	temp.scope = 0 ---分数
+	temp.money = 8000 --钱
+	temp.health = 50 --生命
+	temp.time = temp.stages[1].time --时间
+	temp.stage = 0 -- 关卡
+	temp.blockhouses = {} -- 碉堡
+	temp.hints = {} --提示ʾ
 	temp.gselectedBlockhouse = nil;
 	
-	temp.enemys = {} --����
-	temp.ballets = {} -- �ӵ� 
-	-- ������λ��
+	temp.enemys = {} --敌人
+	temp.ballets = {} -- 子弹 
+	-- 鼠标绝对位置
 	temp.mousepointer = {x = 0,
 	                    y = 0}
-	-- �������λ��					
+	-- 鼠标网格位置					
 	temp.gridpointer = {x = 0,
 	                    y = 0}
+
 
 	-- Setup the randomized grid
 --	temp.grid = {}
@@ -275,7 +276,7 @@ function Game:getSelectWepons()
 end
 
 function Game:draw()
-	--draw ����
+	--draw 背景
 	--love.graphics.draw(graphics["battle_bg"], 480/2, 640/2)
 	--love.graphics.draw(graphics["battle_bg"], love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 	--print("self:x :"..self.x)
@@ -330,7 +331,7 @@ function Game:draw()
 	end
 	local selectWeapon = self:getSelectWepons()
 	
-	-- draw Ԥ�����÷���
+	-- draw 预备放置方框
 	if (selectWeapon >=0) then
 		local gx = self.gridpointer.x
 		local gy = self.gridpointer.y
@@ -341,7 +342,7 @@ function Game:draw()
 		love.graphics.setColor(color["grid_hover"])
 		love.graphics.rectangle( love.draw_line, cx, cy , 17*2, 17*2) 
 		
-		-- ѡ���˵ﱤ����
+		-- 选择了碉堡武器
 		if i >0 then
 			if self.money >= tower_upgrade[i][1].buy_cost and 
 			(self.maps[grid_col*gy + gx+1] == 0) and
@@ -357,7 +358,7 @@ function Game:draw()
 			local range = tower_upgrade[i][1].range;
 			love.graphics.circle(love.draw_fill, cx + 17, cy + 17, range*7, 255)
 
-   			-- ��ѡ�������������
+   			-- 画选择的武器的性能
 			local damage  = tower_upgrade[i][1].damage
 			local buy_cost = tower_upgrade[i][1].buy_cost
 			local shoot_time = tower_upgrade[i][1].shoot_time
@@ -447,7 +448,7 @@ function Game:draw()
 		end
 	end
 	
-	-- ��ѡ�������������
+	-- 画选择的武器的性能
 	if(self.gselectedBlockhouse ~=nil) then
 		local level = self.gselectedBlockhouse.level
 	 	local index = self.gselectedBlockhouse.weapon
@@ -482,7 +483,7 @@ function Game:draw()
 			love.graphics.print(shoot_time_next, battlearea.left + 144, battlearea.top + 604)
 		end
 	end
-	--��ѡ��ĵﱤ�߿�
+	--画选择的碉堡边框
 	if self.gselectedBlockhouse ~= nil and self.gselectedBlockhouse.live == 1 then
      	self.gselectedBlockhouse:drawselector()
 	end
@@ -550,18 +551,18 @@ function Game:update(dt)
 	end
 
 	if self.win ~= -999 then
-		if self.win > 0 then -- ʤ��
+		if self.win > 0 then -- 胜利
 			self.win = self.win - dt
 		end
 		self.button["new"]:update(dt)
 		self.button["quit"]:update(dt)
-	elseif self.pause then -- ��ͣ
+	elseif self.pause then -- 暂停
 		self.button["resume"]:update(dt)
 		self.button["quit"]:update(dt)
 	elseif self.health <= 0 then
 		self.button["new"]:update(dt)
 		self.button["quit"]:update(dt)
-	else -- ��Ϸ��
+	else -- 游戏中
 		local x = love.mouse.getX()
 		local y = love.mouse.getY()
 		self.mousepointer.x = x
@@ -576,7 +577,7 @@ function Game:update(dt)
 
 		for n,bh in pairs(self.blockhouses) do
 			if(bh.live == 0) then
-				-- ���õ�ͼλ��Ϊ����ͨ��
+				-- 设置地图位置为可以通过
 				local gx = bh.gridpointer.x
 				local gy = bh.gridpointer.y
 				Map[grid_col*gy + gx ].iCanPass = true
@@ -596,7 +597,7 @@ function Game:update(dt)
 
 		for m,b in pairs(self.ballets) do
 		
-			if (b.live == 0) then -- ��ը
+			if (b.live == 0) then -- 爆炸
 				local weapon = b.host.blockhouse.weapon
 				local level = b.host.blockhouse.level
 				--pr(b,"ballet")
@@ -697,15 +698,15 @@ function Game:update(dt)
 	end
 end
 
--- �л��ؿ�
+-- 切换关卡
 function Game:switchStage(dt)
 
 	--print("battlearea.left:"..battlearea.left)
 	--love.timer.sleep(2000)
 	if self.time <= 0 then
 		self.stage = self.stage + 1
-		self.time = self.stages[self.stage].time --ʱ��
-		-- ���˽��볡��
+		self.time = self.stages[self.stage].time --时间
+		-- 敌人进入场景
 		if(self.stage >= 1 and self.stage <= #self.stages) then
 		
 			for i = 1,self.stages[self.stage].number / 2 do
@@ -780,7 +781,7 @@ function Game:mousepressed(x, y, button)
 	local gx = math.floor((x - battlearea.left - 17/2) / 17)
 	local gy = math.floor((y - battlearea.top - 17/2 ) / 17)
 	
-	-- ��һ�� 
+	-- 下一关 
 	if(x > 3 and x < 50 and y > 555 and y < 590) then
 	    self.time = 0
 		local bonus
@@ -793,7 +794,7 @@ function Game:mousepressed(x, y, button)
 		table.insert(self.hints, Hint.create("fadeout2", "TIME BONUS!" .. bonus, 300, 550))
 	end
 	
-	-- ��home�� 
+	-- 按home键
 	if(x > 3 and x < 50 and y > 600 and y < 634) then
 		if self.win ~= -999 or self.health <= 0 then
 			state = Menu.create()
@@ -810,7 +811,7 @@ function Game:mousepressed(x, y, button)
 			(self.maps[grid_col * (gy + 1) + gx + 1] == 0) and
 			(self.maps[grid_col * (gy + 1) + gx + 2] == 0) then
 		
-		-- ����һ���ﱤ
+		-- 增加一个碉堡
 		Map[grid_col * gy + gx ].iCanPass = false
 		Map[grid_col * gy + gx + 1].iCanPass = false
 		Map[grid_col * (gy + 1) + gx ].iCanPass = false
@@ -838,7 +839,7 @@ function Game:mousepressed(x, y, button)
 	
 			self.blockhouses[20 * gy + gx] = blockhouse
 			
-			-- ���õ�ͼλ��Ϊ������ͨ��
+			-- 设置地图位置为不可以通过
 			love.audio.play(sound["create_tower"])
 			self.money = self.money - tower_upgrade[i][1].buy_cost
 		end

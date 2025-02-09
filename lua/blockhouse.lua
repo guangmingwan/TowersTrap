@@ -114,7 +114,7 @@ function Blockhouse:draw()
 		s = "unsel"
 	end
 
-	-- ���ﱤ��Ϣ 
+	-- 画碉堡信息 
 	if self.hover and debug then
 		love.graphics.setFont(font["tiny"])
  		love.graphics.setColor(color["text"])

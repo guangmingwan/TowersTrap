@@ -48,10 +48,9 @@ function Rocket:update(dt)
 		self.shoot_time = self.shoot_time - 10 * dt
 	end
 
-	if (self.target == nil) then --��ȡһ��target
-
+	if (self.target == nil) then --获取一个target
 		for i,e in pairs(state.enemys) do
-			if (e.hidden~=true and e.number ~=6 -- ���Ƿɻ�
+			if (e.hidden~=true and e.number ~=6 -- 不是飞机
 			and  math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
 			    self.target = e
 			    e.locked = e.locked + 1
@@ -61,13 +60,13 @@ function Rocket:update(dt)
  	end
     local e = self.target
     if(e ~= nil) then
-		if(e.health <=0 ) then -- ���ٵ�Ŀ�걻������
+		if(e.health <=0 ) then -- 跟踪的目标被击毙了
 			e.locked = e.locked - 1
 			self.target = nil
 			return
 		end
 		if(math.abs(e.x - self.blockhouse.x) > range or
-			math.abs(e.y - self.blockhouse.y) > range) then -- ������Χ
+			math.abs(e.y - self.blockhouse.y) > range) then -- 超出范围
     		e.locked = e.locked - 1
 		    self.target = nil
 		    return

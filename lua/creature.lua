@@ -30,11 +30,11 @@ function Creature.create(game, number, gx, gy, live)
 	temp.gy = gy
 	temp.x = 17*gx + 17/2 + battlearea.left
 	temp.y = 17*gy + 17/2 + battlearea.top
-	temp.slowly = false -- ï¿½ï¿½ï¿½ï¿½
-	temp.slowly_time = 0 -- ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+	temp.slowly = false -- ¼õËÙ
+	temp.slowly_time = 0 -- ¼õËÙÊ±¼ä
 	temp.slowly_angle = 0
 	temp.hidden = false
-	temp.antihidden_time = 0 --ï¿½Æ»ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+	temp.antihidden_time = 0 --ÆÆ»µÒþ²ØÊ±¼ä
  	temp.update_time = 1
 	temp.drawMap =  {n = KMapWidth *  KMapHeight}
 	temp.foundpath = false
@@ -46,12 +46,12 @@ function Creature.create(game, number, gx, gy, live)
 	end
 
 	temp.map = {}
-	temp.pass = false -- ï¿½Ç·ñµ½´ï¿½ï¿½Õµï¿½ 
+	temp.pass = false -- ÊÇ·ñµ½´ïÖÕµã 
 	temp.startIndex = temp.gx + temp.gy * grid_col
 	temp.live = live
 	temp.off_angle = 0
-	temp.firstx = 0  --ï¿½ï¿½Ò»ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½
-	temp.firsty = 0  --ï¿½ï¿½Ò»ï¿½ï¿½yï¿½ï¿½ï¿½ï¿½
+	temp.firstx = 0  --µÚÒ»²½x×ø±ê
+	temp.firsty = 0  --µÚÒ»²½y×ø±ê
 	temp.needbuildpath = false
 	if(gx >=0 and gx <=3) then -- from left
 		temp.angle = 0
@@ -65,7 +65,7 @@ function Creature.create(game, number, gx, gy, live)
 		temp.firsty = 66
 	end
 	
-	-- ï¿½ï¿½Ê¼ï¿½ï¿½Í¬Ä¿ï¿½ÄµØµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	-- ³õÊ¼»¯Í¬Ä¿µÄµØµÄ×ø±ê²î
 	if(temp.from == 0) then --top
 		temp.endX = temp.x
     	temp.endY = battlearea.top + (temp.endIndex % grid_col )*17
@@ -145,30 +145,31 @@ end
 function Creature:_y()
 	return battlearea.top + (gy) * 17
 end
--- å®šä¹‰ä¸€ä¸ªæ–°å‡½æ•°ï¼Œç”¨äºŽæ›¿æ¢ love.graphics.draw
+-- ¶¨ÒåÒ»¸öÐÂº¯Êý£¬ÓÃÓÚÌæ»» love.graphics.draw
 local function drawWithDegrees(image, x, y, angleDegrees)
-	-- é»˜è®¤ç¼©æ”¾æ¯”ä¾‹è®¾ç½®ä¸º1ï¼Œå³ä¸è¿›è¡Œç¼©æ”¾
+	-- Ä¬ÈÏËõ·Å±ÈÀýÉèÖÃÎª1£¬¼´²»½øÐÐËõ·Å
     local scaleX, scaleY = 1, 1
-    -- å°†è§’åº¦ä»Žåº¦è½¬æ¢ä¸ºå¼§åº¦
+    -- ½«½Ç¶È´Ó¶È×ª»»Îª»¡¶È
     local angleRadians = angleDegrees * (math.pi / 180)
 
-    -- è®¡ç®—å›¾åƒä¸­å¿ƒç‚¹çš„åç§»é‡
+    -- ¼ÆËãÍ¼ÏñÖÐÐÄµãµÄÆ«ÒÆÁ¿
     local originX = image:getWidth() / 2
     local originY = image:getHeight() / 2
 
-    -- ä½¿ç”¨è½¬æ¢åŽçš„å¼§åº¦å€¼å’Œä¸­å¿ƒç‚¹åç§»è¿›è¡Œç»˜åˆ¶
+    -- Ê¹ÓÃ×ª»»ºóµÄ»¡¶ÈÖµºÍÖÐÐÄµãÆ«ÒÆ½øÐÐ»æÖÆ
     love.graphics.draw(image, x, y, angleRadians, scaleX, scaleY, originX, originY)
 end
 function Creature:draw()
     local currentX = self.x
     local currentY = self.y
     
-    -- è®¾ç½®çº¿æ¡å®½åº¦å’Œå¹³æ»‘æ ·å¼
+    
     love.graphics.setLineWidth(1)
     love.graphics.setLineStyle("smooth")
     love.graphics.setColor(color["grid_close"])
 
     if debug then
+		-- »­ÏßÂ·Í¼ 
         if self.drawMap ~= nil then
             for i = 1, #self.map do
                 local nextX = self.map[i].iX * 17 + 17 / 2
@@ -180,12 +181,12 @@ function Creature:draw()
         end
     end
 
-    -- ç»˜åˆ¶è¡€æ¡èƒŒæ™¯
+    -- »­ÑªÌõ
     local m = math.max(self.width, self.height)
     love.graphics.setColor(color["blood"])
     love.graphics.rectangle("fill", self.x - m / 2, self.y - m / 2 - 5, m, 2)
 
-    -- ç»˜åˆ¶å½“å‰ç”Ÿå‘½å€¼
+    
     love.graphics.setColor(color["green"])
     love.graphics.rectangle("fill", self.x - m / 2, self.y - m / 2 - 5, m * self.health / self.blood, 2)
 
@@ -193,9 +194,9 @@ function Creature:draw()
         local r, g, b, a = love.graphics.getColor()
 
         if self.hidden then
-            love.graphics.setColor(1, 1, 1, 100/255) -- åŠé€æ˜Žç™½è‰²
+            love.graphics.setColor(1, 1, 1, 100/255) 
             drawWithDegrees(graphics["creature"][self.number], self.x, self.y, self.angle)
-            love.graphics.setColor(r, g, b, a) -- æ¢å¤åŽŸå§‹é¢œè‰²
+            love.graphics.setColor(r, g, b, a) 
         else
             drawWithDegrees(graphics["creature"][self.number], self.x, self.y, self.angle)
         end
@@ -203,7 +204,7 @@ function Creature:draw()
         if self.slowly then
             drawWithDegrees(graphics["star_circle"], self.x, self.y, self.angle + self.slowly_angle)
         end
-
+		-- ÏÔÊ¾µÐÈË×´Ì¬
         if self.hover and debug then
             love.graphics.setColor(color["menu_bg"])
             love.graphics.setFont(font["small"])
@@ -236,7 +237,7 @@ function Creature:MoveOnAir(dt)
 		self.angle = self.off_angle - 90 * 3
 	end
 
-	--ï¿½Æ¶ï¿½Ä¿ï¿½ï¿½
+	--ÒÆ¶¯Ä¿±ê
     if(math.abs(dx)>speed or math.abs(dy)>speed) then
 		self.x = self.x - speed*math.sin(angle*math.pi/180)
 		self.y = self.y + speed*math.cos(angle*math.pi/180)
@@ -291,7 +292,7 @@ function Creature:MoveOnLand(dt)
 				self.angle = self.off_angle - 90 * 3
 			end
 
-			--ï¿½Æ¶ï¿½Ä¿ï¿½ï¿½
+			--ÒÆ¶¯Ä¿±ê
 			if(math.abs(dx)>speed or math.abs(dy)>speed) then
 				self.x = self.x - speed*math.sin(angle*math.pi/180)
 				self.y = self.y + speed*math.cos(angle*math.pi/180)
@@ -320,7 +321,7 @@ function Creature:update(dt)
 	else
 	    self.slowly = false
 	end
-	if (self.number == 5 ) then --ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	if (self.number == 5 ) then --ÒþÐÎÄÜÁ¦µÄÉúÎï
 		if(self.antihidden_time > 0) then
 	    	self.antihidden_time = self.antihidden_time - dt
 		else
@@ -328,7 +329,7 @@ function Creature:update(dt)
 	    end
 	end
 	self.update_time = self.update_time + dt
-	if (self.update_time > 0.5 and self.number == 7 ) then -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	if (self.update_time > 0.5 and self.number == 7 ) then -- ±ù¶³ÉúÎï
 		self.update_time = 0
 		local maxaff = 0
 		for n,bh in pairs(state.blockhouses) do
@@ -358,10 +359,10 @@ function Creature:update(dt)
 		return
 	end
 
-	-- ï¿½Ç·ñµ½´ï¿½Ä¿ï¿½ï¿½
+	-- ÊÇ·ñµ½´ïÄ¿±ê
 	if  ((self.number == 6) and
 	     ((self.from == 0 and self.y > 546) or (self.from == 1 and self.x > 480))) or
-		self.startIndex == self.endIndex then --ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
+		self.startIndex == self.endIndex then --µ½´ïÄ¿±ê
 		print("reach") 
 		self.pass = true
 		love.audio.play(sound.creature_rich_dest)
@@ -375,7 +376,7 @@ function Creature:update(dt)
     	self.needbuildpath = true
 	end
 	if self.number ~=6 and self.needbuildpath then
-	-- ï¿½ï¿½Ê¼Ñ°Â·
+	-- ¿ªÊ¼Ñ°Â·
 		self:ReCaleGridXY()
 		
 		if(self.foundpath == false) then
@@ -404,15 +405,15 @@ function Creature:update(dt)
 		end
 
 		local isNeedReBuildPath = false
-		-- ï¿½ï±¤ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½
+		-- µï±¤ÊýÁ¿¸Ä±ä
 		if isblockhouseNumChanged then
 			isblockhouseNumChanged = false
 			isNeedReBuildPath = true
 			print("rebuild because #self.game.blockhouses changed!")
 		else
-		-- ï¿½ï¿½ï¿½Â·ï¿½Ç·ñ±»»Ù»ï¿½
+		-- ¼ì²âÂ·ÊÇ·ñ±»»Ù»µ
 			for i = 1, #self.map do
-				local index =  self.map[i].iIndex + 1   --ï¿½ï¿½Ç°Â·ï¿½ï¿½
+				local index =  self.map[i].iIndex + 1   --µ±Ç°Â·¾¶
 				if self.game.maps[index] == 1 then
 					isNeedReBuildPath = true
 					break
@@ -427,7 +428,7 @@ function Creature:update(dt)
 		end
 	end
 	
-	-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+	-- ³¯³ö¿ÚÒÆ¶¯
 	if(self.number == 6) then
 	    self:MoveOnAir(dt)
 	else

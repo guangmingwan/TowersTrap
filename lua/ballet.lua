@@ -26,8 +26,8 @@ function Ballet.create(type,host,x,y,target)
 	temp.from = 1
 	temp.live = 1
 	temp.time = 0
-	temp.host = host --�ӵ�������
-	temp.type = type -- 0 �ӵ�,1 �����2 ��ũ�ڵ�  3 ���ٵ� 4 �ضԿյ���  5 ���� 6 ������̽�� 
+	temp.host = host --子弹的宿主
+	temp.type = type -- 0 子弹,1 火箭，2 加农炮弹  3 减速弹 4 地对空导弹  5 地震 6 反隐形探测 
 	return temp
 end
 -- 定义一个新函数，用于替换 love.graphics.draw
@@ -76,7 +76,7 @@ function Ballet:update(dt)
 	
 	self.time = self.time + dt
 
-	--�ӵ��ƶ�
+	--子弹移动
 	--pr(b,"ballet")
 	if self.type == 1 then -- rocket
 	    self:rocketMove(dt)
@@ -121,7 +121,7 @@ function Ballet:rocketMove(dt)
 	end
 
 
-	if(self.time < range*7 / speed) then --�����켣
+	if(self.time < range*7 / speed) then --修正轨迹
 		self.targetX = self.target.x
 		self.targetY = self.target.y
 	end
@@ -130,10 +130,10 @@ function Ballet:rocketMove(dt)
 		self.x = self.x - speed*math.sin(angle*math.pi/180)
 		self.y = self.y + speed*math.cos(angle*math.pi/180)
 	else
-		self.live = 0 --�������
+		self.live = 0 ---超过射程
 	end
 	if self.target.x - self.x < 8 and self.target.y - self.y < 8 then
-	    self.live = 0 -- ����Ŀ��
+	    self.live = 0 -- 命中目标
 	end
 end
 
@@ -150,10 +150,10 @@ function Ballet:gunTraceMove(dt)
 		self.x = self.x - speed*math.sin(angle*math.pi/180)
 		self.y = self.y + speed*math.cos(angle*math.pi/180)
 	else
-		self.live = 0 --�������
+		self.live = 0 --超过射程
 	end
 	if self.target.x - self.x < 8 and self.target.y - self.y < 8 then
-	    self.live = 0 -- ����Ŀ��
+	    self.live = 0 -- 命中目标
 	    self.target.slowly = true
 	    self.target.slowly_time = 60
 	end
@@ -167,24 +167,24 @@ function Ballet:aimTraceMove(dt)
 	local dx = self.x - self.target.x
 	local dy = self.y - self.target.y
 
-	--//���ٶ�
+	--//角速度
 	local omega = 4
---	//Ŀ����y��ļн�
+--	//目标与y轴的夹角
 	local angle = ( 270 + math.atan2(dy, dx)*180/math.pi) % 360
---	//Ŀ���뵼���ļн�
+--	//目标与导弹的夹角
 	local crtangle = (angle - self.angle + 360) % 360
---	//�жϵ�����ת����
+--	//判断导弹旋转方向
 	local dir =  ((crtangle<=180) and 1) or -1
 	self.angle = ((crtangle < 180 and crtangle > omega or crtangle > 180 and 360 - crtangle > omega) and self.angle + omega*dir) or angle
---	//�ƶ�����
+--	//移动导弹
  	if(self.time < 2.3) then
 		self.x = self.x + speed * math.sin(self.angle * math.pi/180)
 		self.y = self.y - speed * math.cos(self.angle * math.pi/180)
 	else
-	    self.live = 0 --�������
+	    self.live = 0 --超过射程
 	end
 	
 	if self.target.x - self.x < 8 and self.target.y - self.y < 8 then
-	    self.live = 0 -- ����Ŀ��
+	    self.live = 0 -- 命中目标
 	end
 end
