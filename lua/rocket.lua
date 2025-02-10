@@ -60,6 +60,11 @@ function Rocket:update(dt)
  	end
     local e = self.target
     if(e ~= nil) then
+		if(e.pass == true) then --目标达到终点了
+			e.locked = e.locked - 1
+			self.target = nil
+			return
+		end
 		if(e.health <=0 ) then -- 跟踪的目标被击毙了
 			e.locked = e.locked - 1
 			self.target = nil

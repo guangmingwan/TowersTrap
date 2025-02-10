@@ -35,7 +35,7 @@ function Sniper:update(dt)
 	if (self.target == nil) then --获取一个target
 		for i,e in pairs(state.enemys) do
 
-			if(e.hidden~=true and math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
+			if(e.hidden~=true and e.number ~=6 and math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
 			    self.target = e
 			    e.locked = e.locked + 1
 			end

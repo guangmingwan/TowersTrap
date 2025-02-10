@@ -37,11 +37,12 @@ function Radar:update(dt)
 	local foundenemyscount = 0
 	for i,e in pairs(state.enemys) do
 
-		if(e.number == 4) then
+		--if(e.number == 4) then
+		--	foundenemyscount = foundenemyscount + 1
+		--end
+		if(e.number == 5 and e.hidden == true and math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
 			foundenemyscount = foundenemyscount + 1
-		end
-		if(e.hidden ==true and math.abs(e.x - self.blockhouse.x) <= range and math.abs(e.y - self.blockhouse.y) <= range) then
-      		e.hidden = false
+			e.hidden = false
 		    e.antihidden_time = 2			
 		end
 	end

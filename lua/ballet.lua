@@ -154,8 +154,10 @@ function Ballet:gunTraceMove(dt)
 	end
 	if self.target.x - self.x < 8 and self.target.y - self.y < 8 then
 	    self.live = 0 -- 命中目标
-	    self.target.slowly = true
-	    self.target.slowly_time = 60
+		if(self.type == 3) then --减速枪
+	    	self.target.slowly = true
+	    	self.target.slowly_time = 60
+		end
 	end
 end
 
